@@ -12,6 +12,7 @@ T clampf(T value, T minVal, T maxVal) { return max(minVal, min(value, maxVal)); 
 #include "timing.h"
 
 #define FLASHMEM
+#define PROGMEM
 
 #define LOOPDURATION 5000
 #define REVIEWTIME 250
