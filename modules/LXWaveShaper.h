@@ -18,13 +18,13 @@ public:
     void update() override
     {
         if (_curve->changed(true))
-        {
-            // for (auto shaper : _shapers)
-            // {
-            //     //TODO switch the shape data of the shaper
-            //     // shaper->shape(_shaper.getValue(), data);
-            // }
-        }
+            for (auto shaper : _shapers)
+            {
+                uint8_t curveIndex = clampf<uint8_t>(_curve->getValue(), 0, 29);
+                int dataLen = (curveIndex == 0) ? 3 : 257;
+                shaper->shape(WST[curveIndex], dataLen);
+            }
+        
         if (_pregain->changed(true))
             for (auto amp : _amps)
                 amp->gain(_pregain->getValue());

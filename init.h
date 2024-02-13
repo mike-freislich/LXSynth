@@ -4,7 +4,6 @@
 #include "LXModuleList.h"
 #include "LXControllerList.h"
 
-
 void storeParameter(const char *parm) { printf("storing : %s\n", parm); }
 
 FLASHMEM void initParameters()
@@ -80,11 +79,10 @@ FLASHMEM void initParameters()
     // RingMod
     Parameters.add(ParmKeys::ring_shape);
     Parameters.add(ParmKeys::ring_freq)->setRange(0, 20000)->setValue(1);
-    ;
     Parameters.add(ParmKeys::ring_level)->setRange(0, 1)->setValue(1.0);
     // Waveshaper
     Parameters.add(ParmKeys::shaper_pregain)->setRange(0, 2)->setValue(1.0);
-    Parameters.add(ParmKeys::shaper_curve);
+    Parameters.add(ParmKeys::shaper_curve)->setRange(0,29)->setValue(9);
     Parameters.add(ParmKeys::shaper_bypass);
     // filter
     Parameters.add(ParmKeys::filter_type);
