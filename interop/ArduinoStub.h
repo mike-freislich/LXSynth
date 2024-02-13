@@ -14,8 +14,8 @@ T clampf(T value, T minVal, T maxVal) { return max(minVal, min(value, maxVal)); 
 #define FLASHMEM
 #define PROGMEM
 
-#define LOOPDURATION 5000
-#define REVIEWTIME 250
+#define LOOPDURATION 50
+#define REVIEWTIME 1000
 
 #define TICKTIME 5
 #define SCENE_REFRESH_RATE 120

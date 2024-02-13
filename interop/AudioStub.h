@@ -190,7 +190,7 @@ class AudioEffectWaveshaper : public AudioStream
     AudioEffectWaveshaper(void): AudioStream(1, NULL) {}
     ~AudioEffectWaveshaper() {}
     virtual void update(void) {}
-    void shape(float* waveshape, int length) {}
+    void shape(float* waveshape, int length) { LOG("WaveShaper CurveData: "<< waveshape << " data size: "<< length); }
 };
 
 class AudioFilterStateVariable: public AudioStream
