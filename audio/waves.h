@@ -1,5 +1,8 @@
 #pragma once
+
+#ifdef BUILD_FOR_TEENSY
 #include "synth_waveform.h"
+#endif
 
 const uint8_t waves[] PROGMEM = {
     WAVEFORM_SINE,
