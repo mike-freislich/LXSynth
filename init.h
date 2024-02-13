@@ -7,8 +7,6 @@
 #include "LXPotentiometer.h"
 #include "LXRotary.h"
 
-
-
 void storeParameter(const char *parm) { printf("storing : %s\n", parm); }
 
 FLASHMEM void initParameters()
@@ -97,13 +95,13 @@ FLASHMEM void initParameters()
     Parameters.add(ParmKeys::filter_octaves);
     Parameters.add(ParmKeys::filter_postgain)->setRange(0, 2)->setValue(1.0);
     // noise
-    Parameters.add(ParmKeys::noise_level)->setRange(0,1)->setValue(0);
-    Parameters.add(ParmKeys::noise_type)->setRange(0,1)->setValue(0);
+    Parameters.add(ParmKeys::noise_level)->setRange(0, 1)->setValue(0);
+    Parameters.add(ParmKeys::noise_type)->setRange(0, 1)->setValue(0);
 
     // buttons
-    Parameters.add(ParmKeys::pressedShift)->setRange(0,1)->setValue(0);
-    Parameters.add(ParmKeys::pressedEnter)->setRange(0,1)->setValue(0);
-    
+    Parameters.add(ParmKeys::pressedShift)->setRange(0, 1)->setValue(0);
+    Parameters.add(ParmKeys::pressedEnter)->setRange(0, 1)->setValue(0);
+
     // SERIALIZE -----
     Parameters.serialize(&storeParameter);
 }
@@ -164,12 +162,12 @@ FLASHMEM void initModules()
 
 FLASHMEM void initControllers()
 {
-    Controllers.add<LXPotentiometer>(ContKeys::pot1)->attachParameters<LXPotentiometer>({aenv_attack, penv_attack, fenv_attack})->setPin(10);        
+    Controllers.add<LXPotentiometer>(ContKeys::pot1)->attachParameters<LXPotentiometer>({aenv_attack, penv_attack, fenv_attack})->setPin(10);
     Controllers.add<LXPotentiometer>(ContKeys::pot2)->attachParameters<LXPotentiometer>({aenv_hold, penv_hold, fenv_hold})->setPin(11);
     Controllers.add<LXPotentiometer>(ContKeys::pot3)->attachParameters<LXPotentiometer>({aenv_decay, penv_decay, fenv_decay})->setPin(12);
     Controllers.add<LXPotentiometer>(ContKeys::pot4)->attachParameters<LXPotentiometer>({aenv_sustain, penv_sustain, fenv_sustain})->setPin(13);
     Controllers.add<LXPotentiometer>(ContKeys::pot5)->attachParameters<LXPotentiometer>({aenv_release, penv_release, fenv_release})->setPin(14);
     Controllers.add<LXButton>(ContKeys::btnShift)->attachParameters<LXButton>({pressedShift})->setPin(30);
     Controllers.add<LXButton>(ContKeys::btnEnter)->attachParameters<LXButton>({pressedEnter})->setPin(31);
-    Controllers.add<LXRotary>(ContKeys::rotA)->setPins(34,35);
+    Controllers.add<LXRotary>(ContKeys::rotA)->setPins(34, 35);
 }
