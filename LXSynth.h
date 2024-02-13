@@ -1,4 +1,5 @@
 #pragma once
+#include <Audio.h>
 #include "init.h"
 
 class LXSynth

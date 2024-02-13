@@ -1,11 +1,13 @@
 #pragma once
+#include "AUMapping.h"
 #include "LXParameterList.h"
 #include "LXModuleList.h"
 #include "LXControllerList.h"
 #include "LXButton.h"
 #include "LXPotentiometer.h"
 #include "LXRotary.h"
-#include "AUMapping.h"
+
+
 
 void storeParameter(const char *parm) { printf("storing : %s\n", parm); }
 

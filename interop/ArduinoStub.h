@@ -1,4 +1,13 @@
 #pragma once
+
+#ifdef BUILD_FOR_TEENSY
+
+#include <Arduino.h>
+template <typename T>
+T clampf(T value, T minVal, T maxVal) { return max(minVal, min(value, maxVal)); }
+
+#else
+
 #include <cstdio>
 #include "timing.h"
 
@@ -94,3 +103,4 @@ T map(T x, T in_min, T in_max, T out_min, T out_max)
 
 template <typename T>
 T clampf(T value, T minVal, T maxVal) { return std::max(minVal, std::min(value, maxVal)); }
+#endif
