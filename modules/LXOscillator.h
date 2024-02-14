@@ -25,8 +25,9 @@ public:
             for (auto au : _audioUnits)
             {
                 AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);
-                // TODO may require audio interrupts to halt for this
-                wave->begin(_amp->getValue(), _freq->getValue() + _detune->getValue(), _shape->getValue());
+                wave->begin( // TODO may require audio interrupts to halt for this
+                    _amp->getValue(), _freq->getValue() + _detune->getValue(),
+                    waves[(uint8_t)_shape->getValue()]);
             }
         }
         else
