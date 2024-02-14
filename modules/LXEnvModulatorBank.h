@@ -75,7 +75,7 @@ public:
             _lfoWave->begin(
                 _parameters[lfo_amount]->getValue(),
                 _parameters[lfo_freq]->getValue(),
-                _parameters[lfo_shape]->getValue());
+                waves[(uint8_t)_parameters[lfo_shape]->getValue()]);
         }
         else
         {
@@ -84,6 +84,39 @@ public:
             if (_parameters[lfo_freq]->changed(true))
                 _lfoWave->frequency(_parameters[lfo_freq]->getValue());
         }
+    }
+
+    /// @brief Trigger all voice envelopes (unison mode)
+    /// @return
+    FLASHMEM void noteOn()
+    {
+        for (auto e : _envelopes)
+            e->noteOn();
+    }
+
+    /// @brief Trigger a specific voice envelope (polyphonic mode)
+    /// @param voiceNum - the voice number 0...3
+    /// @return
+    FLASHMEM void noteOn(uint8_t voiceNum)
+    {
+        voiceNum = voiceNum % _envelopes.size();
+        _envelopes[voiceNum]->noteOn();
+    }
+
+    /// @brief all envelopes start release phase (Polyphonic)
+    /// @return
+    void noteOff()
+    {
+        for (auto e : _envelopes)
+            e->noteOff();
+    }
+
+    /// @brief specific voice envelope start release phase (Unison)
+    /// @param voice - which voice to affect
+    void noteOff(uint8_t voice)
+    {
+        voice = voice % _envelopes.size();
+        _envelopes[voice]->noteOff();
     }
 
 private:
