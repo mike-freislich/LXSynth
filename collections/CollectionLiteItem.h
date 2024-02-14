@@ -6,7 +6,7 @@ enum ItemType
     TCollectionLiteItem,
     TLXParameter,
     TLXModule,
-    TLXModulatorBank,
+    TLXEnvModulatorBank,
     TLXFilterBank,
     TLXPulseWidthMod,
     TLXCrossModulation,
@@ -30,7 +30,7 @@ FLASHMEM const char *ItemTypeToName(ItemType type)
     case ItemType::TCollectionLiteItem: return "CollectionItem";
     case ItemType::TLXParameter: return "LXParameter";
     case ItemType::TLXModule: return "LXModule";
-    case ItemType::TLXModulatorBank : return "LXModulatorBank";
+    case ItemType::TLXEnvModulatorBank : return "LXEnvModulatorBank";
     case ItemType::TLXFilterBank : return "LXFilterBank";
     case ItemType::TLXPulseWidthMod : return "LXPulseWidthMod";
     case ItemType::TLXCrossModulation : return "LXCrossModulation";

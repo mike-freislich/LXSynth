@@ -5,7 +5,7 @@ class LXEnvModulatorBank : public LXModule
 {
 public:
     LXEnvModulatorBank(ModKeys key) : LXModule(key) {}
-    ItemType getType() override { return ItemType::TLXModulatorBank; }
+    ItemType getType() override { return ItemType::TLXEnvModulatorBank; }
 
     FLASHMEM LXEnvModulatorBank *attachEnvelopes(const std::vector<AudioEffectEnvelope *> &envelopes)
     {

@@ -21,15 +21,15 @@ public:
         initControllers();
 
         _envModulators = {
-            Modules.module<LXEnvModulatorBank>(TLXModulatorBank, AEnvModulator),
-            Modules.module<LXEnvModulatorBank>(TLXModulatorBank, PEnvModulator),
-            Modules.module<LXEnvModulatorBank>(TLXModulatorBank, FEnvModulator)};
+            Modules.module<LXEnvModulatorBank>(TLXEnvModulatorBank, AEnvModulator),
+            Modules.module<LXEnvModulatorBank>(TLXEnvModulatorBank, PEnvModulator),
+            Modules.module<LXEnvModulatorBank>(TLXEnvModulatorBank, FEnvModulator)};
     }
 
     void update()
     {
-        Controllers.update();
-        Modules.update();
+        Controllers.update();   // read controller values and set parameters
+        Modules.update();       // check parameters per module and change audio unit parameters
     }
 
     void noteOn()
