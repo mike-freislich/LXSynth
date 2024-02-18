@@ -5,6 +5,7 @@
 #include "AUMapping.h"
 #include "waves.h"
 #include "waveshaperTables.h"
+#include "DebugLog.h"
 
 class LXModule : public CollectionLiteItem<ModKeys>
 {
@@ -28,13 +29,13 @@ public:
 
     virtual void afterAttachParameters() {}
 
-    FLASHMEM LXModule *attachAudioUnits(const std::vector<AudioStream *> &audioUnits)
+    LXModule *attachAudioUnits(const std::vector<AudioStream *> &audioUnits)
     {
         _audioUnits = audioUnits;
         return this;
     }
 
-    FLASHMEM LXParameter *findParameter(ParmKeys key)
+    LXParameter *findParameter(ParmKeys key)
     {
         for (auto &p : _parameters)
         {
@@ -42,6 +43,11 @@ public:
                 return p;
         }
         return nullptr; // not found
+    }
+
+    void update() override
+    {
+        LOG(ItemTypeToName(getType()));
     }
 
 protected:

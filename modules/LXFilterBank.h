@@ -27,6 +27,7 @@ public:
 
     void update() override
     {
+        LXModule::update();
         if (_filterType->changed(true))
             filterType(((uint8_t)_filterType->getValue()));
 

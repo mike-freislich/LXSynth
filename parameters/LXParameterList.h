@@ -15,7 +15,7 @@ public:
     {
         for (auto &p : items)
         {
-            char *buffer = new char[PARM_BYTES];
+            char *buffer = new char[PARM_BYTES];            
             snprintf(buffer, PARM_BYTES,
                      "key:%d, value:%11.3f, min:%11.3f, max:%11.3f",
                      p->key,

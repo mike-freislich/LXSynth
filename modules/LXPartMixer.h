@@ -13,6 +13,7 @@ public:
 
     void update() override
     {
+        LXModule::update();
         if (_partPan->changed(true))
         {
             float pan = _partPan->getValue();

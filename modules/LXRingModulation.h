@@ -14,6 +14,7 @@ public:
 
     void update() override
     {
+        LXModule::update();
         if (_ringShape->changed(true))
         {
             _ringFreq->changed(true);

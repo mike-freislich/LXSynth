@@ -13,26 +13,26 @@ public:
     }
     ItemType getType() override { return ItemType::TLXVoiceMixer; }
 
-    FLASHMEM void getStereoGainLR(float gain, float pan, float &left, float &right)
+    void getStereoGainLR(float gain, float pan, float &left, float &right)
     {
         left = (1 - pan) * gain;
         right = (1 - left) * gain;
     }
 
-    FLASHMEM float getVoicePan(uint8_t voice)
+    float getVoicePan(uint8_t voice)
     {
         voice = clampf<uint8_t>(voice, 0, _voicePans.size());
         return _voicePans[voice]->getValue();
     }
 
-    FLASHMEM float getVoiceGain(uint8_t voice)
+    float getVoiceGain(uint8_t voice)
     {
         voice = clampf<uint8_t>(voice, 0, _voiceGains.size());
         return _voiceGains[voice]->getValue();
     }
 
-    FLASHMEM float getMasterPan() { return _masterPan->getValue(); }
-    FLASHMEM float getMasterGain() { return _masterGain->getValue(); }
+    float getMasterPan() { return _masterPan->getValue(); }
+    float getMasterGain() { return _masterGain->getValue(); }
 
     /**
      * @brief
@@ -40,7 +40,7 @@ public:
      * @param channel 4 channels : 0-3
      * @param position  L<<0.0 <<0.5>> 1.0>>R
      */
-    FLASHMEM void voicePan(uint8_t voice, float position)
+    void voicePan(uint8_t voice, float position)
     {
         if (voice >= 0 && voice < _voicePans.size())
         {
@@ -49,7 +49,7 @@ public:
         }
     }
 
-    FLASHMEM void voiceGain(uint8_t voice, float value)
+    void voiceGain(uint8_t voice, float value)
     {
         if (voice >= 0 && voice < _voiceGains.size())
         {
@@ -58,33 +58,35 @@ public:
         }
     }
 
-    FLASHMEM void masterPan(float value) { _masterPan->setValue(clampf<float>(value, 0, 1.0f)); }
-    FLASHMEM void masterGain(float value) { _masterGain->setValue(clampf<float>(value, 0, 1.5f)); }
+    void masterPan(float value) { _masterPan->setValue(clampf<float>(value, 0, 1.0f)); }
+    void masterGain(float value) { _masterGain->setValue(clampf<float>(value, 0, 1.5f)); }
 
     void update() override
     {
+        LXModule::update();
+
         float left, right;
         // set mixer channel levels
         
-        for (uint8_t voice = 0; voice < _voicePans.size(); voice++)
-        {
-            if (_voicePans[voice]->changed(true) || _voiceGains[voice]->changed(true))
-            {
-                getStereoGainLR(
-                    _voiceGains[voice]->getValue(),
-                    _voicePans[voice]->getValue(),
-                    left, right);
-                _voiceMixL->gain(voice, left);
-                _voiceMixR->gain(voice, right);
-            }
-        }
-        // set output amp levels
-        if (_masterPan->changed(true) || _masterGain->changed(true))
-        {
-            getStereoGainLR(_masterGain->getValue(), _masterPan->getValue(), left, right);
-            _masterAmpL->gain(left);
-            _masterAmpR->gain(right);
-        }
+        // for (uint8_t voice = 0; voice < _voicePans.size(); voice++)
+        // {
+        //     if (_voicePans[voice]->changed(true) || _voiceGains[voice]->changed(true))
+        //     {
+        //         getStereoGainLR(
+        //             _voiceGains[voice]->getValue(),
+        //             _voicePans[voice]->getValue(),
+        //             left, right);
+        //         _voiceMixL->gain(voice, left);
+        //         _voiceMixR->gain(voice, right);
+        //     }
+        // }
+        // // set output amp levels
+        // if (_masterPan->changed(true) || _masterGain->changed(true))
+        // {
+        //     getStereoGainLR(_masterGain->getValue(), _masterPan->getValue(), left, right);
+        //     _masterAmpL->gain(left);
+        //     _masterAmpR->gain(right);
+        // }
     }
 
 private:

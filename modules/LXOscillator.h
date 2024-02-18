@@ -17,6 +17,7 @@ public:
 
     void update() override
     {
+        LXModule::update();
         if (_shape->changed(true))
         {
             _amp->changed(true);

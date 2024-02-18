@@ -9,8 +9,14 @@
 class LXControllerList : public CollectionLite<LXController, ContKeys>
 {
 public:
-    // const char *serialize()
-    // {           
-    // }
+    void update() override
+    {
+        
+        //digitalIO.update();        
+
+        // run update on all controllers
+        for (auto i : items)
+            i->update();
+    }
 
 } Controllers;

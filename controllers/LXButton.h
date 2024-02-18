@@ -9,7 +9,8 @@ public:
 
 private:
     int readValue() override
-    {
-        return LXController::readValue();
+    {                    
+        return LXController::readValue();        
+        //return analogRead(_pin);
     }
 };

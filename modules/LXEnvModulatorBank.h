@@ -7,22 +7,22 @@ public:
     LXEnvModulatorBank(ModKeys key) : LXModule(key) {}
     ItemType getType() override { return ItemType::TLXEnvModulatorBank; }
 
-    FLASHMEM LXEnvModulatorBank *attachEnvelopes(const std::vector<AudioEffectEnvelope *> &envelopes)
+    LXEnvModulatorBank *attachEnvelopes(const std::vector<AudioEffectEnvelope *> &envelopes)
     {
         _envelopes = envelopes;
         return this;
     }
-    FLASHMEM LXEnvModulatorBank *attachAmountDC(AudioSynthWaveformDc *amountDC)
+    LXEnvModulatorBank *attachAmountDC(AudioSynthWaveformDc *amountDC)
     {
         _amountDC = amountDC;
         return this;
     }
-    FLASHMEM LXEnvModulatorBank *attachBendDC(AudioSynthWaveformDc *bendDC)
+    LXEnvModulatorBank *attachBendDC(AudioSynthWaveformDc *bendDC)
     {
         _bendDC = bendDC;
         return this;
     }
-    FLASHMEM LXEnvModulatorBank *attachLFOWave(AudioSynthWaveformModulated *lfoWave)
+    LXEnvModulatorBank *attachLFOWave(AudioSynthWaveformModulated *lfoWave)
     {
         _lfoWave = lfoWave;
         return this;
@@ -30,6 +30,8 @@ public:
 
     void update() override
     {
+        LXModule::update();
+        
         // Envelope Amount / Invert
         if (_parameters[amount]->changed(true) || _parameters[invert]->changed(true))
         {
@@ -88,7 +90,7 @@ public:
 
     /// @brief Trigger all voice envelopes (unison mode)
     /// @return
-    FLASHMEM void noteOn()
+    void noteOn()
     {
         for (auto e : _envelopes)
             e->noteOn();
@@ -97,7 +99,7 @@ public:
     /// @brief Trigger a specific voice envelope (polyphonic mode)
     /// @param voiceNum - the voice number 0...3
     /// @return
-    FLASHMEM void noteOn(uint8_t voiceNum)
+    void noteOn(uint8_t voiceNum)
     {
         voiceNum = voiceNum % _envelopes.size();
         _envelopes[voiceNum]->noteOn();

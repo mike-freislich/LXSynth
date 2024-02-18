@@ -3,8 +3,10 @@
 #include "LXParameterList.h"
 #include "LXModuleList.h"
 #include "LXControllerList.h"
+#include "digitalio.h"
+#include "LXMidi.h"
 
-void storeParameter(const char *parm) { printf("storing : %s\n", parm); }
+void storeParameter(const char *parm) { Serial.printf("storing : %s\n", parm); }
 
 FLASHMEM void initParameters()
 {
@@ -82,7 +84,7 @@ FLASHMEM void initParameters()
     Parameters.add(ParmKeys::ring_level)->setRange(0, 1)->setValue(1.0);
     // Waveshaper
     Parameters.add(ParmKeys::shaper_pregain)->setRange(0, 2)->setValue(1.0);
-    Parameters.add(ParmKeys::shaper_curve)->setRange(0,29)->setValue(9);
+    Parameters.add(ParmKeys::shaper_curve)->setRange(0, 29)->setValue(9);
     Parameters.add(ParmKeys::shaper_bypass);
     // filter
     Parameters.add(ParmKeys::filter_type);

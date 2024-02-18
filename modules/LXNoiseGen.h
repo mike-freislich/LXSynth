@@ -13,6 +13,7 @@ public:
 
     void update() override
     {
+        LXModule::update();
         if (_noiseType->changed(true) || _noiseLevel->changed(true))
         {
             uint8_t t = _noiseType->getValue();

@@ -17,6 +17,7 @@ public:
 
     void update() override
     {
+        LXModule::update();
         if (_curve->changed(true))
             for (auto shaper : _shapers)
             {

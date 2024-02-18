@@ -54,7 +54,7 @@ public:
         return result;
     }
 
-    void update() override { printf("updating %s\n", ItemTypeToName(getType())); }
+    void update() override { Serial.printf("updating %s\n", ItemTypeToName(getType())); }
 
 private:
     float value_, min_, max_;

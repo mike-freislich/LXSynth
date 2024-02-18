@@ -2,39 +2,62 @@
 #ifdef BUILD_FOR_TEENSY
 #include <Audio.h>
 #endif
-#include "init.h"
 
+#include "init.h"
 #define VOICES 4
 
 class LXSynth
 {
 public:
-    enum PolyMode
+    enum VoiceMode
     {
-        Polyphonic,
+        Poly,
         Unison
     };
+
     LXSynth()
     {
+    }
+
+    void init()
+    {
+        LOG("[INIT] digital IO");
+        digitalIO.init();        
+        LOG("[INIT] Midi");
+        initMidi();
+        LOG("[INIT] Parameters");
         initParameters();
+        LOG("[INIT] Modules");
         initModules();
+        LOG("[INIT] Controllers");
         initControllers();
 
+        LOG("[INIT] Envelope Modulators");
         _envModulators = {
             Modules.module<LXEnvModulatorBank>(TLXEnvModulatorBank, AEnvModulator),
             Modules.module<LXEnvModulatorBank>(TLXEnvModulatorBank, PEnvModulator),
             Modules.module<LXEnvModulatorBank>(TLXEnvModulatorBank, FEnvModulator)};
+
+        LOG("[INIT] VoiceMode");
+        _voiceMode = VoiceMode::Unison;
     }
 
     void update()
     {
-        Controllers.update();   // read controller values and set parameters
-        Modules.update();       // check parameters per module and change audio unit parameters
+        LOG("[SYNTH_UPDATE] controllers");
+        Controllers.update(); // read controller values and set parameters
+        LOG("[SYNTH_UPDATE] midi");
+        usbMIDI.read();
+        LOG("[SYNTH_UPDATE] modules");
+        Modules.update(); // check parameters per module and change audio unit parameters
+        LOG("[SYNTH_UPDATE] success");
     }
 
-    void noteOn()
+    void voiceMode(VoiceMode mode) { _voiceMode = mode; }
+
+    void noteOn(byte channel, byte note, byte velocity)
     {
-        if (_polyMode == Unison)
+        if (_voiceMode == Unison)
             for (auto &mod : _envModulators)
                 mod->noteOn();
         else
@@ -45,23 +68,64 @@ public:
         }
     }
 
-    void noteOff()
+    void noteOff(byte channel, byte note, byte velocity)
     {
-         if (_polyMode == Unison)
+        if (_voiceMode == Unison)
             for (auto &mod : _envModulators)
                 mod->noteOff();
         else
         {
-            //TODO POLYPHONIC need a way of keeping track which note was lifted and therefore which voice to release            
+            // TODO POLYPHONIC need a way of keeping track which note was lifted and therefore which voice to release
             for (auto &mod : _envModulators)
                 mod->noteOff(_polyLastVoice);
         }
     }
 
-    void setPolyMode(PolyMode poly) { _polyMode = poly; }
+    void clock()
+    {
+        static int MidiCLKcount = 0;
+        MidiCLKcount++;
+        // if (MidiCLKcount == 1)
+        // {
+        //     // lastClock = millis();
+        //     //  Serial.println("midi beat");
+        // }
+        // // else if (MidiCLKcount == 2)
+        // // {
+        // //     // uint32_t now = millis();
+        // //     // uint32_t elapsed = now - lastClock;
+        // //     // uint32_t millisPerBeat = elapsed * (uint8_t)ClockDiv::quarter;
+        // //     // Serial.print("elapsed : ");
+        // //     // Serial.println(elapsed);
+        // //     // float bpm = 1.0f / (millisPerBeat / 1000) * 60;
+        // //     // if ((int)bpm != lastTempo)
+        // //     // {
+        // //     //     // lastTempo = (int)bpm;
+        // //     //     // Serial.print("tempo changed : ");
+        // //     //     // Serial.println( bpm);
+        // //     // }
+        // // }
+        if (MidiCLKcount >= ClockDiv::quarter)
+            MidiCLKcount = 0;
+    }
+
+    void pitchBend(byte channel, int pitch) {}
+
+    void afterTouch(byte channel, byte pressure) {}
+
+    void controlChange(byte channel, byte control, byte value) {}
 
 private:
-    PolyMode _polyMode = PolyMode::Unison;
+    VoiceMode _voiceMode;
     uint8_t _polyLastVoice = 0;
     std::vector<LXEnvModulatorBank *> _envModulators;
-};
+
+} synth;
+
+// Wrapper methods for midi callbacks
+void myNoteOn(byte channel, byte note, byte velocity) { synth.noteOn(channel, note, velocity); }
+void myNoteOff(byte channel, byte note, byte velocity) { synth.noteOff(channel, note, velocity); }
+void myClock() { synth.clock(); }
+void myPitchChange(byte channel, int pitch) { synth.pitchBend(channel, pitch); }
+void myAfterTouch(byte channel, byte pressure) { synth.afterTouch(channel, pressure); }
+void myControlChange(byte channel, byte control, byte value) { synth.controlChange(channel, control, value); }

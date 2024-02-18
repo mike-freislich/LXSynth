@@ -3,6 +3,8 @@
 #include "ContKeys.h"
 #include "LXParameter.h"
 #include "timing.h"
+#include "AnalogMux.h"
+#include "DigitalIO.h"
 
 class LXController : public CollectionLiteItem<ContKeys>
 {
@@ -16,7 +18,7 @@ public:
         _parameters.clear();
         for (auto pkey : parmKeys)
         {
-            printf("Controller: %s -> Parameter : %s\n", this->typeName(), parmKey_cstr(pkey));
+            Serial.printf("Controller: %s -> Parameter : %s\n", this->typeName(), parmKey_cstr(pkey));
             _parameters.push_back(Parameters[pkey]);
         }
         // afterAttachParameters();
@@ -45,15 +47,15 @@ public:
         return static_cast<T *>(this);
     }
 
-    FLASHMEM LXController *debounceMs(uint32_t durationMs)
+    LXController *debounceMs(uint32_t durationMs)
     {
         _debounceTimer.duration(durationMs);
         return this;
     }
 
-    FLASHMEM void setPin(uint16_t pin) { _pin = pin; }
+    void setPin(uint16_t pin) { _pin = pin; }
 
-    FLASHMEM void setRange(int min, int max)
+    void setRange(int min, int max)
     {
         _min = min;
         _max = max;
@@ -70,9 +72,9 @@ protected:
      * @return true
      * @return false
      */
-    FLASHMEM bool checkDebounce() { return _debounceTimer.update(); }
+    bool checkDebounce() { return _debounceTimer.update(); }
 
-    FLASHMEM float mapToParameterValue(LXParameter *p, int controllerValue)
+    float mapToParameterValue(LXParameter *p, int controllerValue)
     {
         float pmin, pmax;
         p->getRange(pmin, pmax);

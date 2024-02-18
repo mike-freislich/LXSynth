@@ -8,7 +8,8 @@ public:
     ItemType getType() override { return ItemType::TLXCrossModulation; }
 
     void update() override
-    {
+    {        
+        LXModule::update();
         if (_xmodAmount->changed(true))
         {
             // pot centre = no xmod.... pot left = apply a -> b ... pot right = apply b -> a

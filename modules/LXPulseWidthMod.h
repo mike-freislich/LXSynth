@@ -8,13 +8,13 @@ public:
 
     ItemType getType() override { return ItemType::TLXPulseWidthMod; }
 
-    FLASHMEM LXPulseWidthMod *attachPWMWave(AudioSynthWaveform *wave)
+    LXPulseWidthMod *attachPWMWave(AudioSynthWaveform *wave)
     {
         _wave = wave;
         return this;
     }
 
-    FLASHMEM LXPulseWidthMod *attachAmp(AudioAmplifier *amp)
+    LXPulseWidthMod *attachAmp(AudioAmplifier *amp)
     {
         _amp = amp;
         return this;
@@ -22,6 +22,7 @@ public:
 
     void update() override
     {
+        LXModule::update();
         if (_parameters[shape]->changed(true))
         {
             _parameters[gain]->changed(true);
