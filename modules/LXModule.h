@@ -45,9 +45,9 @@ public:
         return nullptr; // not found
     }
 
-    void update() override
+    virtual void update() override
     {
-        LOG(ItemTypeToName(getType()));
+        //LOG(ItemTypeToName(getType()));
     }
 
 protected:

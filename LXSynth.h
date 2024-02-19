@@ -23,13 +23,11 @@ public:
     {
         LOG("[INIT] digital IO");
         digitalIO.init();        
-        LOG("[INIT] Midi");
         initMidi();
-        LOG("[INIT] Parameters");
-        initParameters();
-        LOG("[INIT] Modules");
-        initModules();
-        LOG("[INIT] Controllers");
+        AudioMemory(64);
+        initMixers();    
+        initParameters();        
+        initModules();        
         initControllers();
 
         LOG("[INIT] Envelope Modulators");
@@ -40,23 +38,66 @@ public:
 
         LOG("[INIT] VoiceMode");
         _voiceMode = VoiceMode::Unison;
+
+        AudioProcessorUsageMaxReset();
+        AudioMemoryUsageMaxReset();
+    }
+
+    void initMixer(AudioMixer4 *mixer, float gain)
+    {
+        mixer->gain(0, gain);
+        mixer->gain(1, gain);
+        mixer->gain(2, gain);
+        mixer->gain(3, gain);
+    }
+
+    void initMixers()
+    {
+        LOG("[INIT] Static Mixers");
+        initMixer(&auMIXER_AM_V1a, 1.0f);
+        initMixer(&auMIXER_AM_V2a, 1.0f);
+        initMixer(&auMIXER_AM_V3a, 1.0f);
+        initMixer(&auMIXER_AM_V4a, 1.0f);
+        initMixer(&auMIXER_AM_V1b, 1.0f);
+        initMixer(&auMIXER_AM_V2b, 1.0f);
+        initMixer(&auMIXER_AM_V3b, 1.0f);
+        initMixer(&auMIXER_AM_V4b, 1.0f);
+
+        initMixer(&auMIXER_FM_v1a, 1.0f);
+        initMixer(&auMIXER_FM_v2a, 1.0f);
+        initMixer(&auMIXER_FM_v3a, 1.0f);
+        initMixer(&auMIXER_FM_v4a, 1.0f);
+        initMixer(&auMIXER_FM_v1b, 1.0f);
+        initMixer(&auMIXER_FM_v2b, 1.0f);
+        initMixer(&auMIXER_FM_v3b, 1.0f);
+        initMixer(&auMIXER_FM_v4b, 1.0f);
+
+        initMixer(&auMIXER_WAVE_V1a, 1.0f);
+        initMixer(&auMIXER_WAVE_V2a, 1.0f);
+        initMixer(&auMIXER_WAVE_V3a, 1.0f);
+        initMixer(&auMIXER_WAVE_V4a, 1.0f);
+        initMixer(&auMIXER_WAVE_V1b, 1.0f);
+        initMixer(&auMIXER_WAVE_V2b, 1.0f);
+        initMixer(&auMIXER_WAVE_V3b, 1.0f);
+        initMixer(&auMIXER_WAVE_V4b, 1.0f);
     }
 
     void update()
     {
-        LOG("[SYNTH_UPDATE] controllers");
-        Controllers.update(); // read controller values and set parameters
-        LOG("[SYNTH_UPDATE] midi");
-        usbMIDI.read();
-        LOG("[SYNTH_UPDATE] modules");
-        Modules.update(); // check parameters per module and change audio unit parameters
-        LOG("[SYNTH_UPDATE] success");
+        //LOG("[SYNTH_UPDATE] controllers"); // .
+        Controllers.update();              // read controller values and set parameters
+        //LOG("[SYNTH_UPDATE] midi");        // .
+        usbMIDI.read();                    // read midi values
+        //LOG("[SYNTH_UPDATE] modules");     // .
+        Modules.update();                  // check parameters per module and change audio unit parameters
+        //LOG("[SYNTH_UPDATE] success");     // .
     }
 
     void voiceMode(VoiceMode mode) { _voiceMode = mode; }
 
     void noteOn(byte channel, byte note, byte velocity)
     {
+        LOG("NOTE ON");
         if (_voiceMode == Unison)
             for (auto &mod : _envModulators)
                 mod->noteOn();
@@ -70,6 +111,7 @@ public:
 
     void noteOff(byte channel, byte note, byte velocity)
     {
+        LOG("NOTE OFF");
         if (_voiceMode == Unison)
             for (auto &mod : _envModulators)
                 mod->noteOff();

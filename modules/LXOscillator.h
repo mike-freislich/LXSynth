@@ -36,6 +36,8 @@ public:
             if (_detune->changed(true) || _freq->changed(true))
             {
                 float freq = _freq->getValue() + _detune->getValue();
+                LOG("Frequency Changed : " << freq);
+
                 for (auto au : _audioUnits)
                 {
                     AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);
@@ -50,6 +52,16 @@ public:
                     wave->frequency(_amp->getValue());
                 }
             }
+        }
+    }
+
+    void begin()
+    {
+
+        for (auto au : _audioUnits)
+        {
+            AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);
+            wave->begin(_amp->getValue(), _freq->getValue(), _shape->getValue());
         }
     }
 

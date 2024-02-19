@@ -10,7 +10,13 @@ public:
         _voicePans = {Parameters[voice_pan0], Parameters[voice_pan1], Parameters[voice_pan2], Parameters[voice_pan3]};
         _masterGain = Parameters[master_gain];
         _masterPan = Parameters[master_pan];
+
+        _voiceMixL = &auMIXER_FINAL_L;
+        _voiceMixR = &auMIXER_FINAL_R;
+        _masterAmpL = &auAMP_MASTER_GAIN_L;
+        _masterAmpR = &auAMP_MASTER_GAIN_R;
     }
+
     ItemType getType() override { return ItemType::TLXVoiceMixer; }
 
     void getStereoGainLR(float gain, float pan, float &left, float &right)
@@ -66,27 +72,27 @@ public:
         LXModule::update();
 
         float left, right;
+
         // set mixer channel levels
-        
-        // for (uint8_t voice = 0; voice < _voicePans.size(); voice++)
-        // {
-        //     if (_voicePans[voice]->changed(true) || _voiceGains[voice]->changed(true))
-        //     {
-        //         getStereoGainLR(
-        //             _voiceGains[voice]->getValue(),
-        //             _voicePans[voice]->getValue(),
-        //             left, right);
-        //         _voiceMixL->gain(voice, left);
-        //         _voiceMixR->gain(voice, right);
-        //     }
-        // }
-        // // set output amp levels
-        // if (_masterPan->changed(true) || _masterGain->changed(true))
-        // {
-        //     getStereoGainLR(_masterGain->getValue(), _masterPan->getValue(), left, right);
-        //     _masterAmpL->gain(left);
-        //     _masterAmpR->gain(right);
-        // }
+        for (uint8_t voice = 0; voice < _voicePans.size(); voice++)
+        {
+            if (_voicePans[voice]->changed(true) || _voiceGains[voice]->changed(true))
+            {
+                getStereoGainLR(
+                    _voiceGains[voice]->getValue(),
+                    _voicePans[voice]->getValue(),
+                    left, right);
+                _voiceMixL->gain(voice, left);
+                _voiceMixR->gain(voice, right);
+            }
+        }
+        // set output amp levels
+        if (_masterPan->changed(true) || _masterGain->changed(true))
+        {
+            getStereoGainLR(_masterGain->getValue(), _masterPan->getValue(), left, right);
+            _masterAmpL->gain(left);
+            _masterAmpR->gain(right);
+        }
     }
 
 private:

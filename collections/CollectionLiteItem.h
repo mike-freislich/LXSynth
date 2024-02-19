@@ -23,7 +23,7 @@ enum ItemType
     TLXRotary
 };
 
-FLASHMEM const char *ItemTypeToName(ItemType type)
+const char *ItemTypeToName(ItemType type)
 {
     switch (type)
     {

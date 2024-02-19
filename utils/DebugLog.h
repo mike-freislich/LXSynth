@@ -6,8 +6,6 @@
 #include <iostream>
 #include <sstream>
 
-#define DEBUG
-
 #ifdef DEBUG
 #define LOG(message) logDebug(std::ostringstream() << message)
 #else

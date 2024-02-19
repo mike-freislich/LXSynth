@@ -7,44 +7,45 @@ public:
     LXParameter(ParmKeys key) : CollectionLiteItem(key) {}
     ItemType getType() override { return ItemType::TLXParameter; }
 
-    FLASHMEM LXParameter *setValue(float v)
+    LXParameter *setValue(float v)
     {
         v = clampf(v, min_, max_);
 
         if (v != value_)
         {
             changed_ = true;
+            LOG("[PARAMETER][" << parmKey_cstr(key) << "] changed to value : " << value_);
             value_ = v;
         }
 
         return this;
     }
 
-    FLASHMEM LXParameter *setValue(float v, float originMin, float originMax)
+    LXParameter *setValue(float v, float originMin, float originMax)
     {
         setValue(map(v, originMin, originMax, min_, max_));
         return this;
     }
 
-    FLASHMEM float getValue() { return value_; }
+    float getValue() { return value_; }
 
-    FLASHMEM LXParameter *setRange(float min, float max)
+    LXParameter *setRange(float minValue, float maxValue)
     {
-        min_ = min;
-        max_ = max;
+        min_ = minValue;
+        max_ = maxValue;
         value_ = clampf(value_, min_, max_);
         return this;
     }
-    FLASHMEM void getRange(float &min, float &max)
+    void getRange(float &minValue, float &maxValue)
     {
-        min = min_;
-        max = max_;
+        minValue = min_;
+        maxValue = max_;
     }
 
-    FLASHMEM float getMin() { return min_; }
-    FLASHMEM float getMax() { return max_; }
+    float getMin() { return min_; }
+    float getMax() { return max_; }
 
-    FLASHMEM bool changed(bool clearFlag)
+    bool changed(bool clearFlag)
     {
         bool result = changed_;
 
@@ -57,6 +58,6 @@ public:
     void update() override { Serial.printf("updating %s\n", ItemTypeToName(getType())); }
 
 private:
-    float value_, min_, max_;
+    float value_ = 0, min_ = 0, max_ = 0;
     bool changed_;
 };

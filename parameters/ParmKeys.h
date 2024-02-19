@@ -95,7 +95,7 @@ enum ParmKeys
     pressedEnter = 810
 };
 
-FLASHMEM const char * parmKey_cstr(ParmKeys key)
+const char * parmKey_cstr(ParmKeys key)
 {
     switch (key)
     {

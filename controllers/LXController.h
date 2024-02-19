@@ -5,6 +5,7 @@
 #include "timing.h"
 #include "AnalogMux.h"
 #include "DigitalIO.h"
+#include "ControllerPins.h"
 
 class LXController : public CollectionLiteItem<ContKeys>
 {
@@ -76,7 +77,7 @@ protected:
 
     float mapToParameterValue(LXParameter *p, int controllerValue)
     {
-        float pmin, pmax;
+        float pmin = 0, pmax = 0;
         p->getRange(pmin, pmax);
         float v = map((float)controllerValue, (float)_min, (float)_max, pmin, pmax);
         return v;

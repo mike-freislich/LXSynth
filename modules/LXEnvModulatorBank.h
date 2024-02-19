@@ -31,7 +31,7 @@ public:
     void update() override
     {
         LXModule::update();
-        
+
         // Envelope Amount / Invert
         if (_parameters[amount]->changed(true) || _parameters[invert]->changed(true))
         {
@@ -137,6 +137,6 @@ private:
         lfo_shape
     };
     std::vector<AudioEffectEnvelope *> _envelopes;
-    AudioSynthWaveformDc *_amountDC, *_bendDC;
-    AudioSynthWaveformModulated *_lfoWave;
+    AudioSynthWaveformDc *_amountDC = nullptr, *_bendDC = nullptr;
+    AudioSynthWaveformModulated *_lfoWave = nullptr;
 };

@@ -50,7 +50,7 @@ public:
     virtual void update()
     {        
         for (auto i : items)
-            i->update();        
+            i->update();
     }
 
 protected:

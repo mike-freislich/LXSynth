@@ -6,10 +6,12 @@
 #include "digitalio.h"
 #include "LXMidi.h"
 
-void storeParameter(const char *parm) { Serial.printf("storing : %s\n", parm); }
+void storeParameter(const char *parm) { LOG("storing :" << parm << "\n"); }
 
-FLASHMEM void initParameters()
+void initParameters()
 {
+    LOG("[INIT] Parameters");
+
     // master gain
     Parameters.add(ParmKeys::master_gain)->setRange(0, 1)->setValue(1.0);
     Parameters.add(ParmKeys::master_pan)->setRange(0, 1)->setValue(0.5);
@@ -63,11 +65,11 @@ FLASHMEM void initParameters()
     // oscillators
     Parameters.add(ParmKeys::osc_a_shape);
     Parameters.add(ParmKeys::osc_a_amp)->setRange(0, 1)->setValue(1.0);
-    Parameters.add(ParmKeys::osc_a_freq)->setRange(0, 20000)->setValue(1);
+    Parameters.add(ParmKeys::osc_a_freq)->setRange(0, 20000)->setValue(400);
     Parameters.add(ParmKeys::osc_a_detune);
     Parameters.add(ParmKeys::osc_b_shape);
     Parameters.add(ParmKeys::osc_b_amp)->setRange(0, 1)->setValue(1.0);
-    Parameters.add(ParmKeys::osc_b_freq)->setRange(0, 20000)->setValue(1);
+    Parameters.add(ParmKeys::osc_b_freq)->setRange(0, 20000)->setValue(400);
     Parameters.add(ParmKeys::osc_b_detune);
     // PWM
     Parameters.add(ParmKeys::pwm_a_shape);
@@ -104,8 +106,9 @@ FLASHMEM void initParameters()
     Parameters.serialize(&storeParameter);
 }
 
-FLASHMEM void initModules()
+void initModules()
 {
+    LOG("[INIT] Modules");
     // ModulatorBanks
     Modules.add<LXEnvModulatorBank>(ModKeys::AEnvModulator)
         ->attachParameters<LXEnvModulatorBank>(
@@ -114,6 +117,7 @@ FLASHMEM void initModules()
         ->attachEnvelopes({&auENV_AMP_V1, &auENV_AMP_V2, &auENV_AMP_V3, &auENV_AMP_V4})
         ->attachAmountDC(&auDC_AMPENV)
         ->attachLFOWave(&auLFO_AMP);
+
     Modules.add<LXEnvModulatorBank>(ModKeys::FEnvModulator)
         ->attachParameters<LXEnvModulatorBank>(
             {fenv_attack, fenv_hold, fenv_decay, fenv_sustain, fenv_release, fenv_amount, fenv_invert, filter_bend,
@@ -121,6 +125,7 @@ FLASHMEM void initModules()
         ->attachEnvelopes({&auENV_FILTER_V1, &auENV_FILTER_V2, &auENV_FILTER_V3, &auENV_FILTER_V4})
         ->attachAmountDC(&auDC_FILTERENV)
         ->attachLFOWave(&auLFO_FILTER);
+
     Modules.add<LXEnvModulatorBank>(ModKeys::PEnvModulator)
         ->attachParameters<LXEnvModulatorBank>(
             {penv_attack, penv_hold, penv_decay, penv_sustain, penv_release, penv_amount, penv_invert, pitch_bend,
@@ -158,14 +163,15 @@ FLASHMEM void initModules()
     Modules.add<LXVoiceMixer>(ModKeys::VoiceMixer);
 }
 
-FLASHMEM void initControllers()
+void initControllers()
 {
-    Controllers.add<LXPotentiometer>(ContKeys::pot1)->attachParameters<LXPotentiometer>({aenv_attack, penv_attack, fenv_attack})->setPin(10);
-    Controllers.add<LXPotentiometer>(ContKeys::pot2)->attachParameters<LXPotentiometer>({aenv_hold, penv_hold, fenv_hold})->setPin(11);
-    Controllers.add<LXPotentiometer>(ContKeys::pot3)->attachParameters<LXPotentiometer>({aenv_decay, penv_decay, fenv_decay})->setPin(12);
-    Controllers.add<LXPotentiometer>(ContKeys::pot4)->attachParameters<LXPotentiometer>({aenv_sustain, penv_sustain, fenv_sustain})->setPin(13);
-    Controllers.add<LXPotentiometer>(ContKeys::pot5)->attachParameters<LXPotentiometer>({aenv_release, penv_release, fenv_release})->setPin(14);
-    Controllers.add<LXButton>(ContKeys::btnShift)->attachParameters<LXButton>({pressedShift})->setPin(30);
-    Controllers.add<LXButton>(ContKeys::btnEnter)->attachParameters<LXButton>({pressedEnter})->setPin(31);
-    Controllers.add<LXRotary>(ContKeys::rotA)->setPins(34, 35);
+    LOG("[INIT] Controllers");
+    Controllers.add<LXPotentiometer>(ContKeys::pot1)->attachParameters<LXPotentiometer>({osc_a_freq, osc_b_freq})->setPin(POT_V1_Fader1);
+    Controllers.add<LXPotentiometer>(ContKeys::pot2)->attachParameters<LXPotentiometer>({osc_a_shape, osc_b_shape})->setPin(POT_V1_Fader2);
+    Controllers.add<LXPotentiometer>(ContKeys::pot3)->attachParameters<LXPotentiometer>({osc_a_amp, osc_b_amp})->setPin(POT_V1_Fader3);
+    Controllers.add<LXPotentiometer>(ContKeys::pot4)->attachParameters<LXPotentiometer>({osc_a_detune, osc_b_detune})->setPin(POT_V1_Fader4);
+    // Controllers.add<LXPotentiometer>(ContKeys::pot5)->attachParameters<LXPotentiometer>({})->setPin(14);
+    // Controllers.add<LXButton>(ContKeys::btnShift)->attachParameters<LXButton>({pressedShift})->setPin(30);
+    // Controllers.add<LXButton>(ContKeys::btnEnter)->attachParameters<LXButton>({pressedEnter})->setPin(31);
+    // Controllers.add<LXRotary>(ContKeys::rotA)->setPins(34, 35);
 }
