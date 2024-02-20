@@ -29,6 +29,7 @@ public:
         initParameters();        
         initModules();        
         initControllers();
+        initViews();
 
         LOG("[INIT] Envelope Modulators");
         _envModulators = {
@@ -91,6 +92,7 @@ public:
         //LOG("[SYNTH_UPDATE] modules");     // .
         Modules.update();                  // check parameters per module and change audio unit parameters
         //LOG("[SYNTH_UPDATE] success");     // .
+        Views.update();
     }
 
     void voiceMode(VoiceMode mode) { _voiceMode = mode; }

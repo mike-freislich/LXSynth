@@ -23,9 +23,10 @@ public:
             _amp->changed(true);
             _detune->changed(true);
             _freq->changed(true);
+            LOG("Shape Changed: " << _shape->getValue());
             for (auto au : _audioUnits)
             {
-                AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);
+                AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);                
                 wave->begin( // TODO may require audio interrupts to halt for this
                     _amp->getValue(), _freq->getValue() + _detune->getValue(),
                     waves[(uint8_t)_shape->getValue()]);
@@ -36,7 +37,7 @@ public:
             if (_detune->changed(true) || _freq->changed(true))
             {
                 float freq = _freq->getValue() + _detune->getValue();
-                LOG("Frequency Changed : " << freq);
+                LOG("Frequency Changed : " << _freq->getValue() << " with detune " << _detune->getValue());
 
                 for (auto au : _audioUnits)
                 {
@@ -46,10 +47,11 @@ public:
             }
             if (_amp->changed(true))
             {
+                LOG("Amplitude Changed : " << _amp->getValue());
                 for (auto au : _audioUnits)
                 {
                     AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);
-                    wave->frequency(_amp->getValue());
+                    wave->amplitude(_amp->getValue());
                 }
             }
         }

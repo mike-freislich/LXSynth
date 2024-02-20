@@ -20,7 +20,10 @@ enum ItemType
     TLXController,
     TLXPotentiometer,
     TLXButton,
-    TLXRotary
+    TLXRotary,
+
+    TLXView,
+    TLXOverview
 };
 
 const char *ItemTypeToName(ItemType type)
@@ -44,6 +47,8 @@ const char *ItemTypeToName(ItemType type)
     case ItemType::TLXPotentiometer : return "LXPotentiometer";
     case ItemType::TLXButton : return "LXButton";
     case ItemType::TLXRotary : return "LXRotary";
+    case ItemType::TLXView : return "LXView";
+    case ItemType::TLXOverview : return "LXOverview";
     default: return "Unknown";
     }
 }

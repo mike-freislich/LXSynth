@@ -15,6 +15,7 @@ public:
         if (v >= _lastValue + POT_RESOLUTION || v <= _lastValue - POT_RESOLUTION)
         {
             _lastValue = v;
+            LOG("[POT] " << key << ", pin(" << _pin << ") change value to: " << v);
             for (auto p : _parameters)
                 p->setValue(mapToParameterValue(p, v));           
         }        
@@ -25,6 +26,6 @@ private:
 
     int readValue() override
     {
-        return analogMux.analogReadIO(_pin);
+        return clampf<int>((int)analogMux.analogReadIO(_pin), _min, _max);
     }
 };

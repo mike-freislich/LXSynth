@@ -7,10 +7,19 @@
 #include "DigitalIO.h"
 #include "ControllerPins.h"
 
+#define ANALOG_READ_BITS 10
+#define POT_AVERAGE_SAMPLING 32
+
+//static bool called = false;
+
 class LXController : public CollectionLiteItem<ContKeys>
 {
 public:
-    LXController(ContKeys key) : CollectionLiteItem(key) { _debounceTimer.start(); }
+    LXController(ContKeys key) : CollectionLiteItem(key)
+    {
+        LXController::callOnce();
+        _debounceTimer.start();
+    }
     virtual ItemType getType() override { return ItemType::TLXController; }
 
     template <typename ControllerType>
@@ -62,6 +71,18 @@ public:
         _max = max;
     }
 
+    static void callOnce()
+    {
+        static bool called = false;
+        if (!called)
+        {
+            analogReadResolution(ANALOG_READ_BITS);
+            analogReadAveraging(POT_AVERAGE_SAMPLING);
+            LOG("SETTING ANALOG READ AVERAGING AND RESOLUTION");
+            called = true;
+        }
+    }
+
 protected:
     std::vector<LXParameter *> _parameters;
     int _min = 0, _max = 1;
@@ -92,4 +113,3 @@ protected:
 private:
     SimpleTimer _debounceTimer;
 };
-

@@ -53,6 +53,8 @@ public:
             i->update();
     }
 
+    //std::vector<T *> all() { return items; }
+
 protected:
     T *at(KeyType key)
     {
