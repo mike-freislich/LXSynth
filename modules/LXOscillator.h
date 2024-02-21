@@ -26,7 +26,7 @@ public:
             LOG("Shape Changed: " << _shape->getValue());
             for (auto au : _audioUnits)
             {
-                AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);                
+                AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);
                 wave->begin( // TODO may require audio interrupts to halt for this
                     _amp->getValue(), _freq->getValue() + _detune->getValue(),
                     waves[(uint8_t)_shape->getValue()]);
@@ -66,6 +66,18 @@ public:
             wave->begin(_amp->getValue(), _freq->getValue(), _shape->getValue());
         }
     }
+
+    void amplitude(float gain) { _amp->setValue(gain); }
+    void detune(float amount) { _detune->setValue(amount); }
+    void frequency(float freq) { _freq->setValue(freq); }
+    void shape(float shape) { _shape->setValue(shape); }
+
+    float getAmplitude() { return _amp->getValue(); }
+    float getDetune() { return _detune->getValue(); }
+    float getFrequency() { return _freq->getValue(); }
+    float getShape() { return _shape->getValue(); }
+    
+
 
 private:
     LXParameter *_amp, *_detune, *_freq, *_shape;

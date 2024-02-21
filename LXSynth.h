@@ -22,12 +22,12 @@ public:
     void init()
     {
         LOG("[INIT] digital IO");
-        digitalIO.init();        
+        digitalIO.init();
         initMidi();
         AudioMemory(64);
-        initMixers();    
-        initParameters();        
-        initModules();        
+        initMixers();
+        initParameters();
+        initModules();
         initControllers();
         initViews();
 
@@ -39,6 +39,11 @@ public:
 
         LOG("[INIT] VoiceMode");
         _voiceMode = VoiceMode::Unison;
+
+        _osc = {
+            Modules.module<LXOscillator>(TLXOscillator, OscillatorA),
+            Modules.module<LXOscillator>(TLXOscillator, OscillatorB)
+            };
 
         AudioProcessorUsageMaxReset();
         AudioMemoryUsageMaxReset();
@@ -62,7 +67,8 @@ public:
         initMixer(&auMIXER_AM_V1b, 1.0f);
         initMixer(&auMIXER_AM_V2b, 1.0f);
         initMixer(&auMIXER_AM_V3b, 1.0f);
-        initMixer(&auMIXER_AM_V4b, 1.0f);
+        initMixer(&auMIXER_AM_V4b, 1.0f);        
+        
 
         initMixer(&auMIXER_FM_v1a, 1.0f);
         initMixer(&auMIXER_FM_v2a, 1.0f);
@@ -73,7 +79,7 @@ public:
         initMixer(&auMIXER_FM_v3b, 1.0f);
         initMixer(&auMIXER_FM_v4b, 1.0f);
 
-        initMixer(&auMIXER_WAVE_V1a, 1.0f);
+        initMixer(&auMIXER_WAVE_V1a, 1.0f);        
         initMixer(&auMIXER_WAVE_V2a, 1.0f);
         initMixer(&auMIXER_WAVE_V3a, 1.0f);
         initMixer(&auMIXER_WAVE_V4a, 1.0f);
@@ -81,17 +87,22 @@ public:
         initMixer(&auMIXER_WAVE_V2b, 1.0f);
         initMixer(&auMIXER_WAVE_V3b, 1.0f);
         initMixer(&auMIXER_WAVE_V4b, 1.0f);
+
+        initMixer(&_auMIXER_AMPMOD_V1, 1.0f);
+        initMixer(&_auMIXER_AMPMOD_V2, 1.0f);
+        initMixer(&_auMIXER_AMPMOD_V3, 1.0f);
+        initMixer(&_auMIXER_AMPMOD_V4, 1.0f);
     }
 
     void update()
     {
-        //LOG("[SYNTH_UPDATE] controllers"); // .
-        Controllers.update();              // read controller values and set parameters
-        //LOG("[SYNTH_UPDATE] midi");        // .
-        usbMIDI.read();                    // read midi values
-        //LOG("[SYNTH_UPDATE] modules");     // .
-        Modules.update();                  // check parameters per module and change audio unit parameters
-        //LOG("[SYNTH_UPDATE] success");     // .
+        // LOG("[SYNTH_UPDATE] controllers"); // .
+        Controllers.update(); // read controller values and set parameters
+        // LOG("[SYNTH_UPDATE] midi");        // .
+        usbMIDI.read(); // read midi values
+        // LOG("[SYNTH_UPDATE] modules");     // .
+        Modules.update(); // check parameters per module and change audio unit parameters
+        // LOG("[SYNTH_UPDATE] success");     // .
         Views.update();
     }
 
@@ -99,10 +110,18 @@ public:
 
     void noteOn(byte channel, byte note, byte velocity)
     {
-        LOG("NOTE ON");
+        LOG("NOTE ON");    
+        printf("note on channel: %d. note %d, velocity %d\n", channel, note, velocity);
+        //AudioNoInterrupts();       
+        _osc[0]->frequency(noteFreqs[note]);
+        _osc[1]->frequency(noteFreqs[note]);
+        //AudioInterrupts();
+
         if (_voiceMode == Unison)
+        {
             for (auto &mod : _envModulators)
                 mod->noteOn();
+        }
         else
         {
             _polyLastVoice = (_polyLastVoice + 1) % VOICES;
@@ -160,14 +179,17 @@ public:
     void controlChange(byte channel, byte control, byte value) {}
 
 private:
-    VoiceMode _voiceMode;
+    VoiceMode _voiceMode = Unison;
     uint8_t _polyLastVoice = 0;
     std::vector<LXEnvModulatorBank *> _envModulators;
-
+    std::vector<LXOscillator *> _osc;
 } synth;
 
 // Wrapper methods for midi callbacks
-void myNoteOn(byte channel, byte note, byte velocity) { synth.noteOn(channel, note, velocity); }
+void myNoteOn(byte channel, byte note, byte velocity) { 
+    printf("note on channel: %d. note %d, velocity %d\n", channel, note, velocity);
+    synth.noteOn(channel, note, velocity); 
+    }
 void myNoteOff(byte channel, byte note, byte velocity) { synth.noteOff(channel, note, velocity); }
 void myClock() { synth.clock(); }
 void myPitchChange(byte channel, int pitch) { synth.pitchBend(channel, pitch); }

@@ -48,7 +48,8 @@ public:
     virtual void update() override
     {
         //LOG(ItemTypeToName(getType()));
-    }
+    }    
+
 
 protected:
     std::vector<LXParameter *> _parameters;

@@ -59,5 +59,5 @@ public:
 
 private:
     float value_ = 0, min_ = 0, max_ = 0;
-    bool changed_;
+    bool changed_ = false;
 };

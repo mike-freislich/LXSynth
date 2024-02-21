@@ -42,7 +42,7 @@ public:
     }
 
     // returns null if the key is not found
-    T *operator[](KeyType key) { return at(key); }
+    T *operator[](KeyType key) { return at(key); }     
     bool contains(KeyType key) { return at(key); }
     int count() { return (int)items.size(); }
     void clear() { items.clear(); }

@@ -9,7 +9,7 @@ public:
 
     LXEnvModulatorBank *attachEnvelopes(const std::vector<AudioEffectEnvelope *> &envelopes)
     {
-        _envelopes = envelopes;
+        _envelopes = envelopes;        
         return this;
     }
     LXEnvModulatorBank *attachAmountDC(AudioSynthWaveformDc *amountDC)
@@ -29,14 +29,14 @@ public:
     }
 
     void update() override
-    {
-        LXModule::update();
+    {                
 
         // Envelope Amount / Invert
-        if (_parameters[amount]->changed(true) || _parameters[invert]->changed(true))
+        if (_parameters[ModBankParamIndex::amount]->changed(true) || _parameters[ModBankParamIndex::invert]->changed(true))
         {
-            int8_t inverMultiplier = _parameters[ModBankParamIndex::invert]->getValue() ? -1 : 1;
-            _amountDC->amplitude(_parameters[amount]->getValue() * inverMultiplier);
+            //printf("setting env emount DC : [%2.2f]\n", _parameters[amount]->getValue());
+            //int8_t inverMultiplier = _parameters[ModBankParamIndex::invert]->getValue() ? -1 : 1;
+            _amountDC->amplitude(_parameters[amount]->getValue());// * (float)inverMultiplier);
         }
 
         // Envelope ADHSR
@@ -45,8 +45,11 @@ public:
                 _amountDC->amplitude(p->getValue());
 
         if (_parameters[ModBankParamIndex::attack]->changed(true))
+        {
+            printf("setting attack!! [%2.2f]\n", _parameters[ModBankParamIndex::attack]->getValue());
             for (auto e : _envelopes)
                 e->attack(_parameters[ModBankParamIndex::attack]->getValue());
+        }
 
         if (_parameters[ModBankParamIndex::decay]->changed(true))
             for (auto e : _envelopes)
@@ -65,26 +68,26 @@ public:
                 e->release(_parameters[ModBankParamIndex::release]->getValue());
 
         // Bend
-        if (_parameters[bend]->changed(true))
+        if (_parameters[ModBankParamIndex::bend]->changed(true))
             if (_bendDC) // optional
-                _bendDC->amplitude(_parameters[bend]->getValue());
+                _bendDC->amplitude(_parameters[ModBankParamIndex::bend]->getValue());
 
         // LFO
-        if (_parameters[lfo_shape]->changed(true))
+        if (_parameters[ModBankParamIndex::lfo_shape]->changed(true))
         {
-            _parameters[lfo_amount]->changed(true);
-            _parameters[lfo_freq]->changed(true);
+            _parameters[ModBankParamIndex::lfo_amount]->changed(true);
+            _parameters[ModBankParamIndex::lfo_freq]->changed(true);
             _lfoWave->begin(
-                _parameters[lfo_amount]->getValue(),
-                _parameters[lfo_freq]->getValue(),
-                waves[(uint8_t)_parameters[lfo_shape]->getValue()]);
+                _parameters[ModBankParamIndex::lfo_amount]->getValue(),
+                _parameters[ModBankParamIndex::lfo_freq]->getValue(),
+                waves[(uint8_t)_parameters[ModBankParamIndex::lfo_shape]->getValue()]);
         }
         else
         {
-            if (_parameters[lfo_amount]->changed(true))
-                _lfoWave->amplitude(_parameters[lfo_amount]->getValue());
+            if (_parameters[ModBankParamIndex::lfo_amount]->changed(true))
+                _lfoWave->amplitude(_parameters[ModBankParamIndex::lfo_amount]->getValue());
             if (_parameters[lfo_freq]->changed(true))
-                _lfoWave->frequency(_parameters[lfo_freq]->getValue());
+                _lfoWave->frequency(_parameters[ModBankParamIndex::lfo_freq]->getValue());
         }
     }
 
@@ -120,7 +123,8 @@ public:
         voice = voice % _envelopes.size();
         _envelopes[voice]->noteOff();
     }
-
+    
+    
 private:
     enum ModBankParamIndex
     {

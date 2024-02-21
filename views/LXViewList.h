@@ -4,7 +4,7 @@
 #include "ViewKeys.h"
 #include "timing.h"
 
-#define REFRESHRATE_HZ 0.5
+#define REFRESHRATE_HZ 5
 
 class LXViewList : public CollectionLite<LXView, ViewKeys>
 {

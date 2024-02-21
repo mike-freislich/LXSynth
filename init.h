@@ -30,50 +30,50 @@ void initParameters()
     Parameters.add(ParmKeys::voice_pan2)->setRange(0, 1)->setValue(0.5);
     Parameters.add(ParmKeys::voice_pan3)->setRange(0, 1)->setValue(0.5);
     // pitch modulator
-    Parameters.add(ParmKeys::penv_amount)->setRange(0, 1)->setValue(1.0);
-    Parameters.add(ParmKeys::penv_attack)->setRange(0, 10000)->setValue(5);
+    Parameters.add(ParmKeys::penv_amount)->setRange(0, 1)->setValue(0.1);
+    Parameters.add(ParmKeys::penv_attack)->setRange(0, 10000)->setValue(20);
     Parameters.add(ParmKeys::penv_hold)->setRange(0, 10000)->setValue(0);
-    Parameters.add(ParmKeys::penv_decay)->setRange(0, 10000)->setValue(120);
-    Parameters.add(ParmKeys::penv_sustain)->setRange(0, 1)->setValue(1);
+    Parameters.add(ParmKeys::penv_decay)->setRange(0, 10000)->setValue(200);
+    Parameters.add(ParmKeys::penv_sustain)->setRange(0, 1)->setValue(0.8);
     Parameters.add(ParmKeys::penv_release)->setRange(0, 10000)->setValue(120);
     Parameters.add(ParmKeys::penv_invert)->setRange(0, 1)->setValue(0);
-    Parameters.add(ParmKeys::plfo_amount)->setRange(0, 1)->setValue(1);
-    Parameters.add(ParmKeys::plfo_freq)->setRange(0, 3000)->setValue(0.1);
-    Parameters.add(ParmKeys::plfo_shape)->setRange(0, 11)->setValue(0);
-    Parameters.add(ParmKeys::pitch_bend)->setRange(0, 16129)->setValue(8064);
+    Parameters.add(ParmKeys::plfo_amount)->setRange(0, 1)->setValue(0.0);
+    Parameters.add(ParmKeys::plfo_freq)->setRange(0, 3000)->setValue(10);
+    Parameters.add(ParmKeys::plfo_shape)->setRange(0, 11)->setValue(1);
+    Parameters.add(ParmKeys::pitch_bend)->setRange(0, 1)->setValue(0);
     // amplitude modulator
     Parameters.add(ParmKeys::aenv_amount)->setRange(0, 1)->setValue(1.0);
     Parameters.add(ParmKeys::aenv_attack)->setRange(0, 10000)->setValue(5);
     Parameters.add(ParmKeys::aenv_hold)->setRange(0, 10000)->setValue(0);
-    Parameters.add(ParmKeys::aenv_decay)->setRange(0, 10000)->setValue(120);
-    Parameters.add(ParmKeys::aenv_sustain)->setRange(0, 1)->setValue(1);
-    Parameters.add(ParmKeys::aenv_release)->setRange(0, 10000)->setValue(120);
+    Parameters.add(ParmKeys::aenv_decay)->setRange(0, 10000)->setValue(60);
+    Parameters.add(ParmKeys::aenv_sustain)->setRange(0, 1)->setValue(0);
+    Parameters.add(ParmKeys::aenv_release)->setRange(0, 10000)->setValue(5);
     Parameters.add(ParmKeys::aenv_invert)->setRange(0, 1)->setValue(0);
-    Parameters.add(ParmKeys::alfo_amount)->setRange(0, 1)->setValue(1);
-    Parameters.add(ParmKeys::alfo_freq)->setRange(0, 3000)->setValue(0.1);
-    Parameters.add(ParmKeys::alfo_shape)->setRange(0, 11)->setValue(0);
-    Parameters.add(ParmKeys::amp_bend)->setRange(0, 16129)->setValue(8064);
+    Parameters.add(ParmKeys::alfo_amount)->setRange(0, 1)->setValue(0);
+    Parameters.add(ParmKeys::alfo_freq)->setRange(0, 3000)->setValue(4);
+    Parameters.add(ParmKeys::alfo_shape)->setRange(0, 11)->setValue(1);
+    Parameters.add(ParmKeys::amp_bend)->setRange(0, 1)->setValue(0);
     // frequency modulator
-    Parameters.add(ParmKeys::fenv_amount)->setRange(0, 1)->setValue(1.0);
+    Parameters.add(ParmKeys::fenv_amount)->setRange(0, 1)->setValue(1);
     Parameters.add(ParmKeys::fenv_attack)->setRange(0, 10000)->setValue(5);
     Parameters.add(ParmKeys::fenv_hold)->setRange(0, 10000)->setValue(0);
     Parameters.add(ParmKeys::fenv_decay)->setRange(0, 10000)->setValue(120);
-    Parameters.add(ParmKeys::fenv_sustain)->setRange(0, 1)->setValue(1);
+    Parameters.add(ParmKeys::fenv_sustain)->setRange(0, 1)->setValue(0);
     Parameters.add(ParmKeys::fenv_release)->setRange(0, 10000)->setValue(120);
     Parameters.add(ParmKeys::fenv_invert)->setRange(0, 1)->setValue(0);
     Parameters.add(ParmKeys::flfo_amount)->setRange(0, 1)->setValue(1);
     Parameters.add(ParmKeys::flfo_freq)->setRange(0, 3000)->setValue(0.1);
-    Parameters.add(ParmKeys::flfo_shape)->setRange(0, 11)->setValue(0);
-    Parameters.add(ParmKeys::filter_bend)->setRange(0, 16129)->setValue(8064);
+    Parameters.add(ParmKeys::flfo_shape)->setRange(0, 11)->setValue(1);
+    Parameters.add(ParmKeys::filter_bend)->setRange(0, 1)->setValue(0);
     // oscillators
     Parameters.add(ParmKeys::osc_a_shape)->setRange(0, 11)->setValue(WAVEFORM_SQUARE);
     Parameters.add(ParmKeys::osc_a_amp)->setRange(0, 1)->setValue(1.0);
-    Parameters.add(ParmKeys::osc_a_freq)->setRange(0, 5000)->setValue(400);
-    Parameters.add(ParmKeys::osc_a_detune)->setRange(-1000, 1000)->setValue(0);
+    Parameters.add(ParmKeys::osc_a_freq)->setRange(0.1, 3000)->setValue(400);
+    Parameters.add(ParmKeys::osc_a_detune)->setRange(-200, 200)->setValue(0);
     Parameters.add(ParmKeys::osc_b_shape)->setRange(0, 11)->setValue(WAVEFORM_SQUARE);
-    Parameters.add(ParmKeys::osc_b_amp)->setRange(0, 1)->setValue(1.0);
-    Parameters.add(ParmKeys::osc_b_freq)->setRange(0, 5000)->setValue(400);
-    Parameters.add(ParmKeys::osc_b_detune)->setRange(-1000, 1000)->setValue(0);
+    Parameters.add(ParmKeys::osc_b_amp)->setRange(0, 1)->setValue(0);
+    Parameters.add(ParmKeys::osc_b_freq)->setRange(0.1, 3000)->setValue(400);
+    Parameters.add(ParmKeys::osc_b_detune)->setRange(-200, 200)->setValue(0);
     // PWM
     Parameters.add(ParmKeys::pwm_a_shape)->setRange(0, 11)->setValue(WAVEFORM_PULSE); // pulse
     Parameters.add(ParmKeys::pwm_a_freq)->setRange(0, 20000)->setValue(0);            // 1 hertz
@@ -93,8 +93,8 @@ void initParameters()
     Parameters.add(ParmKeys::shaper_bypass)->setRange(0, 1)->setValue(1);    // bypass set
     // filter
     Parameters.add(ParmKeys::filter_type)->setRange(0, 3)->setValue(0);         // LPF 0, BPF 1, HPF 2, LADDER 4
-    Parameters.add(ParmKeys::filter_freq)->setRange(0, 20000)->setValue(20000); // 20000 Hz
-    Parameters.add(ParmKeys::filter_res)->setRange(0.7, 5.0)->setValue(5.0);    // Q = 0.7 ... 5.0
+    Parameters.add(ParmKeys::filter_freq)->setRange(0, 1000)->setValue(500); // 20000 Hz
+    Parameters.add(ParmKeys::filter_res)->setRange(0.7, 5.0)->setValue(3.0);    // Q = 0.7 ... 5.0
     Parameters.add(ParmKeys::filter_octaves)->setRange(0, 7)->setValue(1.0);    // 0 ... 7
     Parameters.add(ParmKeys::filter_postgain)->setRange(0, 2)->setValue(1.0);   // 1.0 = pass thru
     // noise
@@ -169,7 +169,7 @@ void initModules()
 void initControllers()
 {
     LOG("[INIT] Controllers");
-    Controllers.add<LXPotentiometer>(ContKeys::pot1)->attachParameters<LXPotentiometer>({osc_a_freq, osc_b_freq})->setPin(POT_V1_Fader1);
+    Controllers.add<LXPotentiometer>(ContKeys::pot1)->attachParameters<LXPotentiometer>({ParmKeys::filter_freq})->setPin(POT_V1_Fader1);
     Controllers.add<LXPotentiometer>(ContKeys::pot2)->attachParameters<LXPotentiometer>({osc_a_shape, osc_b_shape})->setPin(POT_V1_Fader2);
     Controllers.add<LXPotentiometer>(ContKeys::pot3)->attachParameters<LXPotentiometer>({osc_a_amp, osc_b_amp})->setPin(POT_V1_Fader3);
     Controllers.add<LXPotentiometer>(ContKeys::pot4)->attachParameters<LXPotentiometer>({osc_a_detune, osc_b_detune})->setPin(POT_V1_Fader4);
