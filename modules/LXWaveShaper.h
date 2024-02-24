@@ -13,9 +13,9 @@ public:
         _amps = {&auAMP_SHAPER_PREAMP_V1, &auAMP_SHAPER_PREAMP_V2, &auAMP_SHAPER_PREAMP_V3, &auAMP_SHAPER_PREAMP_V4};
         _mixers = {&auMIXER_SHAPER_BYPASS_V1, &auMIXER_SHAPER_BYPASS_V2, &auMIXER_SHAPER_BYPASS_V3, &auMIXER_SHAPER_BYPASS_V4};
     }
-    ItemType getType() override { return ItemType::TLXWaveShaper; }
+    virtual  const ItemType getType() override { return ItemType::TLXWaveShaper; }
 
-    void update() override
+     void update() override
     {
         LXModule::update();
         if (_curve->changed(true))

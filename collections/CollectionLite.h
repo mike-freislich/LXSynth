@@ -16,21 +16,21 @@ public:
     }
 
     template <typename I>
-    I *add(KeyType key)
+     I *add(KeyType key)
     {
         if (contains(key))
             return static_cast<I *>(at(key));
         return static_cast<I *>(add(new I(key)));
     }
 
-    T *add(KeyType key)
+     T *add(KeyType key)
     {
         if (contains(key))
             return at(key);
         return add(new T(key));
     }
 
-    T *add(T *item)
+     T *add(T *item)
     {
         if (!contains(item->key))
         {
@@ -42,12 +42,12 @@ public:
     }
 
     // returns null if the key is not found
-    T *operator[](KeyType key) { return at(key); }     
-    bool contains(KeyType key) { return at(key); }
-    int count() { return (int)items.size(); }
-    void clear() { items.clear(); }
+     T *operator[](KeyType key) { return at(key); }     
+     bool contains(KeyType key) { return at(key); }
+     int count() { return (int)items.size(); }
+     void clear() { items.clear(); }
 
-    virtual void update()
+     virtual void update()
     {        
         for (auto i : items)
             i->update();

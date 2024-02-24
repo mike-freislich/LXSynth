@@ -11,7 +11,7 @@ typedef std::vector<LXParameter *>LXParameterVector;
 class LXParameterList : public CollectionLite<LXParameter, ParmKeys>
 {
 public:    
-    void serialize(CallbackFuncPtr storeItem)
+     void serialize(CallbackFuncPtr storeItem)
     {
         for (auto &p : items)
         {

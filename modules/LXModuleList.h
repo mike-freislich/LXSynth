@@ -16,9 +16,9 @@ class LXModuleList : public CollectionLite<LXModule, ModKeys>
 public:
     template <typename T>
     T *module(ItemType itemType, ModKeys key)
-    {        
+    {
         if (LXModule *m = this->at(key))
-        {            
+        {
             if (m->getType() == itemType)
                 return static_cast<T *>(m);
         }

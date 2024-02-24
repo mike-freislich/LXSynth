@@ -10,9 +10,9 @@ public:
         _ringLevel = Parameters[ring_level];
         _ringShape = Parameters[ring_shape];
     }
-    ItemType getType() override { return ItemType::TLXRingModulation; }
+    virtual  const ItemType getType() override { return ItemType::TLXRingModulation; }
 
-    void update() override
+     void update() override
     {
         LXModule::update();
         if (_ringShape->changed(true))

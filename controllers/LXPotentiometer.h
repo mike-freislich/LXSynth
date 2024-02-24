@@ -7,9 +7,9 @@ class LXPotentiometer : public LXController
 {
 public:
     LXPotentiometer(ContKeys key) : LXController(key) { setup<LXPotentiometer>(0, 5, 10, 1010); }
-    ItemType getType() override { return ItemType::TLXPotentiometer; }
+     const ItemType getType() override { return ItemType::TLXPotentiometer; }
 
-    void updateController() override
+     void updateController() override
     {
         int v = readValue();
         if (v >= _lastValue + POT_RESOLUTION || v <= _lastValue - POT_RESOLUTION)
@@ -24,7 +24,7 @@ public:
 private:
     int _lastValue = 0;
 
-    int readValue() override
+     int readValue() override
     {
         return clampf<int>((int)analogMux.analogReadIO(_pin), _min, _max);
     }

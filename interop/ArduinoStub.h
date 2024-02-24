@@ -32,7 +32,6 @@ void runTests();
 void setup();
 void loop();
 void beginLoop();
-void exiting();
 void pauseForReview(const std::string &reason, uint32_t delayMS = REVIEWTIME);
 
 
@@ -52,7 +51,6 @@ int main()
 
     timer1.start(TICKTIME);
     beginLoop();
-    exiting();
 #endif
     return 0;
 }
@@ -105,3 +103,5 @@ T map(T x, T in_min, T in_max, T out_min, T out_max)
 template <typename T>
 T clampf(T value, T minVal, T maxVal) { return std::max(minVal, std::min(value, maxVal)); }
 #endif
+
+

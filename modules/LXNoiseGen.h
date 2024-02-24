@@ -9,9 +9,9 @@ public:
         _noiseType = Parameters[noise_type];
         _noiseLevel = Parameters[noise_level];
     }
-    ItemType getType() override { return ItemType::TLXNoiseGen; }
+    virtual  const ItemType getType() override { return ItemType::TLXNoiseGen; }
 
-    void update() override
+     void update() override
     {
         LXModule::update();
         if (_noiseType->changed(true) || _noiseLevel->changed(true))

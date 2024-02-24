@@ -42,14 +42,13 @@ public:
 
         _osc = {
             Modules.module<LXOscillator>(TLXOscillator, OscillatorA),
-            Modules.module<LXOscillator>(TLXOscillator, OscillatorB)
-            };
+            Modules.module<LXOscillator>(TLXOscillator, OscillatorB)};
 
         AudioProcessorUsageMaxReset();
         AudioMemoryUsageMaxReset();
     }
 
-    void initMixer(AudioMixer4 *mixer, float gain)
+    FLASHMEM void initMixer(AudioMixer4 *mixer, float gain)
     {
         mixer->gain(0, gain);
         mixer->gain(1, gain);
@@ -57,7 +56,7 @@ public:
         mixer->gain(3, gain);
     }
 
-    void initMixers()
+    FLASHMEM void initMixers()
     {
         LOG("[INIT] Static Mixers");
         initMixer(&auMIXER_AM_V1a, 1.0f);
@@ -67,8 +66,7 @@ public:
         initMixer(&auMIXER_AM_V1b, 1.0f);
         initMixer(&auMIXER_AM_V2b, 1.0f);
         initMixer(&auMIXER_AM_V3b, 1.0f);
-        initMixer(&auMIXER_AM_V4b, 1.0f);        
-        
+        initMixer(&auMIXER_AM_V4b, 1.0f);
 
         initMixer(&auMIXER_FM_v1a, 1.0f);
         initMixer(&auMIXER_FM_v2a, 1.0f);
@@ -79,7 +77,7 @@ public:
         initMixer(&auMIXER_FM_v3b, 1.0f);
         initMixer(&auMIXER_FM_v4b, 1.0f);
 
-        initMixer(&auMIXER_WAVE_V1a, 1.0f);        
+        initMixer(&auMIXER_WAVE_V1a, 1.0f);
         initMixer(&auMIXER_WAVE_V2a, 1.0f);
         initMixer(&auMIXER_WAVE_V3a, 1.0f);
         initMixer(&auMIXER_WAVE_V4a, 1.0f);
@@ -92,6 +90,11 @@ public:
         initMixer(&_auMIXER_AMPMOD_V2, 1.0f);
         initMixer(&_auMIXER_AMPMOD_V3, 1.0f);
         initMixer(&_auMIXER_AMPMOD_V4, 1.0f);
+
+        // initMixer(&auMIXER_PRESHAPE_V1, 0.25f);
+        // initMixer(&auMIXER_PRESHAPE_V2, 0.25f);
+        // initMixer(&auMIXER_PRESHAPE_V3, 0.25f);
+        // initMixer(&auMIXER_PRESHAPE_V4, 0.25f);
     }
 
     void update()
@@ -101,8 +104,10 @@ public:
         // LOG("[SYNTH_UPDATE] midi");        // .
         usbMIDI.read(); // read midi values
         // LOG("[SYNTH_UPDATE] modules");     // .
+
         Modules.update(); // check parameters per module and change audio unit parameters
-        // LOG("[SYNTH_UPDATE] success");     // .
+                          // LOG("[SYNTH_UPDATE] success");     // .
+
         Views.update();
     }
 
@@ -110,15 +115,14 @@ public:
 
     void noteOn(byte channel, byte note, byte velocity)
     {
-        LOG("NOTE ON");    
-        printf("note on channel: %d. note %d, velocity %d\n", channel, note, velocity);
-        //AudioNoInterrupts();       
-        _osc[0]->frequency(noteFreqs[note]);
-        _osc[1]->frequency(noteFreqs[note]);
-        //AudioInterrupts();
+        LOG("NOTE ON");
+        midi.addNote(note);
 
         if (_voiceMode == Unison)
         {
+            _osc[0]->frequency(noteFreqs[note]);
+            _osc[1]->frequency(noteFreqs[note]);
+
             for (auto &mod : _envModulators)
                 mod->noteOn();
         }
@@ -132,10 +136,22 @@ public:
 
     void noteOff(byte channel, byte note, byte velocity)
     {
+        int8_t nextNote = midi.releaseNote(note);
+
         LOG("NOTE OFF");
         if (_voiceMode == Unison)
-            for (auto &mod : _envModulators)
-                mod->noteOff();
+        {
+            if (nextNote == -1)
+            {
+                for (auto &mod : _envModulators)
+                    mod->noteOff();
+            }
+            else
+            {
+                _osc[0]->frequency(noteFreqs[nextNote]);
+                _osc[1]->frequency(noteFreqs[nextNote]);
+            }
+        }
         else
         {
             // TODO POLYPHONIC need a way of keeping track which note was lifted and therefore which voice to release
@@ -172,24 +188,27 @@ public:
             MidiCLKcount = 0;
     }
 
-    void pitchBend(byte channel, int pitch) {}
+     void pitchBend(byte channel, int pitch) {}
 
-    void afterTouch(byte channel, byte pressure) {}
+     void afterTouch(byte channel, byte pressure) {}
 
-    void controlChange(byte channel, byte control, byte value) {}
+     void controlChange(byte channel, byte control, byte value) {}
 
 private:
     VoiceMode _voiceMode = Unison;
     uint8_t _polyLastVoice = 0;
     std::vector<LXEnvModulatorBank *> _envModulators;
     std::vector<LXOscillator *> _osc;
+    uint8_t noteBuffer[VOICES] = {255, 255, 255, 255};
+    uint8_t nbIndex = 0;
 } synth;
 
 // Wrapper methods for midi callbacks
-void myNoteOn(byte channel, byte note, byte velocity) { 
-    printf("note on channel: %d. note %d, velocity %d\n", channel, note, velocity);
-    synth.noteOn(channel, note, velocity); 
-    }
+void myNoteOn(byte channel, byte note, byte velocity)
+{
+    // printf("note on channel: %d. note %d, velocity %d\n", channel, note, velocity);
+    synth.noteOn(channel, note, velocity);
+}
 void myNoteOff(byte channel, byte note, byte velocity) { synth.noteOff(channel, note, velocity); }
 void myClock() { synth.clock(); }
 void myPitchChange(byte channel, int pitch) { synth.pitchBend(channel, pitch); }

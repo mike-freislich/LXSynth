@@ -6,21 +6,21 @@ class LXPulseWidthMod : public LXModule
 public:
     LXPulseWidthMod(ModKeys key) : LXModule(key) {}
 
-    ItemType getType() override { return ItemType::TLXPulseWidthMod; }
+    virtual  const ItemType getType() override { return ItemType::TLXPulseWidthMod; }
 
-    LXPulseWidthMod *attachPWMWave(AudioSynthWaveform *wave)
+     LXPulseWidthMod *attachPWMWave(AudioSynthWaveform *wave)
     {
         _wave = wave;
         return this;
     }
 
-    LXPulseWidthMod *attachAmp(AudioAmplifier *amp)
+     LXPulseWidthMod *attachAmp(AudioAmplifier *amp)
     {
         _amp = amp;
         return this;
     }
 
-    void update() override
+     void update() override
     {
         LXModule::update();
         if (_parameters[shape]->changed(true))

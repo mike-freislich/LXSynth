@@ -10,15 +10,15 @@ public:
         _min = -1;
         _max = 1;
     }
-    ItemType getType() override { return ItemType::TLXRotary; }
+    virtual  const ItemType getType() override { return ItemType::TLXRotary; }
 
-    void setPins(uint16_t pinA, uint16_t pinB)
+     void setPins(uint16_t pinA, uint16_t pinB)
     {
         _pin = pinA;
         _pin2 = pinB;
     }
 
-    void updateController() override
+     void updateController() override
     {
         if (_moved != 0)
         {

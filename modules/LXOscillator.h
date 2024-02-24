@@ -5,7 +5,7 @@ class LXOscillator : public LXModule
 {
 public:
     LXOscillator(ModKeys key) : LXModule(key) {}
-    ItemType getType() override { return ItemType::TLXOscillator; }
+    virtual  const ItemType getType() override { return ItemType::TLXOscillator; }
 
     void afterAttachParameters() override
     {
@@ -15,7 +15,7 @@ public:
         _shape = _parameters[3];
     }
 
-    void update() override
+     void update() override
     {
         LXModule::update();
         if (_shape->changed(true))
@@ -57,7 +57,7 @@ public:
         }
     }
 
-    void begin()
+     void begin()
     {
 
         for (auto au : _audioUnits)
@@ -67,15 +67,15 @@ public:
         }
     }
 
-    void amplitude(float gain) { _amp->setValue(gain); }
-    void detune(float amount) { _detune->setValue(amount); }
-    void frequency(float freq) { _freq->setValue(freq); }
-    void shape(float shape) { _shape->setValue(shape); }
+     void amplitude(float gain) { _amp->setValue(gain); }
+     void detune(float amount) { _detune->setValue(amount); }
+     void frequency(float freq) { _freq->setValue(freq); }
+     void shape(float shape) { _shape->setValue(shape); }
 
-    float getAmplitude() { return _amp->getValue(); }
-    float getDetune() { return _detune->getValue(); }
-    float getFrequency() { return _freq->getValue(); }
-    float getShape() { return _shape->getValue(); }
+     float getAmplitude() { return _amp->getValue(); }
+     float getDetune() { return _detune->getValue(); }
+     float getFrequency() { return _freq->getValue(); }
+     float getShape() { return _shape->getValue(); }
     
 
 

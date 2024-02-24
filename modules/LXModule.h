@@ -12,7 +12,7 @@ class LXModule : public CollectionLiteItem<ModKeys>
 public:
     LXModule(ModKeys key) : CollectionLiteItem(key) {}
 
-    virtual ItemType getType() override { return ItemType::TLXModule; }
+    virtual const ItemType getType() override { return ItemType::TLXModule; }
 
     template <typename ModuleType>
     ModuleType *attachParameters(const std::vector<ParmKeys> &parmKeys)
@@ -20,7 +20,7 @@ public:
         _parameters.clear();
         for (auto pkey : parmKeys)
         {
-            //printf("Module: %s -> Parameter : %s\n", this->typeName(), parmKey_cstr(pkey));
+            // printf("Module: %s -> Parameter : %s\n", this->typeName(), parmKey_cstr(pkey));
             _parameters.push_back(Parameters[pkey]);
         }
         afterAttachParameters();
@@ -47,12 +47,10 @@ public:
 
     virtual void update() override
     {
-        //LOG(ItemTypeToName(getType()));
-    }    
-
+        // LOG(ItemTypeToName(getType()));
+    }
 
 protected:
     std::vector<LXParameter *> _parameters;
     std::vector<AudioStream *> _audioUnits;
 };
-

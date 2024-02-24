@@ -4,7 +4,7 @@
 #include "ViewKeys.h"
 #include "timing.h"
 
-#define REFRESHRATE_HZ 5
+#define REFRESHRATE_HZ 60
 
 class LXViewList : public CollectionLite<LXView, ViewKeys>
 {
@@ -14,7 +14,7 @@ public:
         refreshTimer.start(1000 / REFRESHRATE_HZ);
     }
 
-    void update() override
+     void update() override
     {
         if (refreshTimer.update())
         {

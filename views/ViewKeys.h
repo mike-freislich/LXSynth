@@ -4,7 +4,7 @@ enum ViewKeys {
     overview
 };
 
-const char *viewKeyToString(ViewKeys key)
+FLASHMEM const char *viewKeyToString(ViewKeys key)
 {
     switch (key)
     {

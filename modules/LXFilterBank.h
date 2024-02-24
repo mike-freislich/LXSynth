@@ -23,9 +23,9 @@ public:
         _filterPostGain = Parameters[filter_postgain];
     }
 
-    ItemType getType() override { return ItemType::TLXFilterBank; }
+    virtual  const ItemType getType() override  { return ItemType::TLXFilterBank; }
 
-    void update() override
+     void update() override
     {
         LXModule::update();
         if (_filterType->changed(true))
@@ -56,7 +56,7 @@ private:
      * Switches the filter between LP, BP, HP, LADDER
      * @param type = FILTER_TYPE_LOWPASS, FILTER_TYPE_BANDPASS, FILTER_TYPE_HIGHPASS, FILTER_TYPE_LADDER
      */
-    void filterType(uint8_t type)
+     void filterType(uint8_t type)
     {
         type = type % 4;
         for (auto mixer : _mixers)
@@ -66,7 +66,7 @@ private:
         }
     }
 
-    void frequency(float freq)
+     void frequency(float freq)
     {
         for (auto filter : _filtersLadder)
             filter->frequency(freq);
@@ -74,7 +74,7 @@ private:
             filter->frequency(freq);
     }
 
-    void resonance(float res)
+     void resonance(float res)
     {
         for (auto filter : _filtersLadder)
             filter->resonance(res);
@@ -82,7 +82,7 @@ private:
             filter->resonance(res);
     }
 
-    void octaves(float oct)
+     void octaves(float oct)
     {
         for (auto filter : _filtersLadder)
             filter->octaveControl(oct);
@@ -90,7 +90,7 @@ private:
             filter->octaveControl(oct);
     }
 
-    void postGain(float gain)
+     void postGain(float gain)
     {
         for (auto amp : _amps)
             amp->gain(gain);

@@ -5,9 +5,9 @@ class LXCrossModulation : public LXModule
 {
 public:
     LXCrossModulation(ModKeys key) : LXModule(key) { _xmodAmount = Parameters[xmod_amount]; }
-    ItemType getType() override { return ItemType::TLXCrossModulation; }
+    virtual  const ItemType getType() override { return ItemType::TLXCrossModulation; }
 
-    void update() override
+     void update() override
     {        
         LXModule::update();
         if (_xmodAmount->changed(true))

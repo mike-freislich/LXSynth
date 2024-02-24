@@ -10,7 +10,6 @@
 #include "AudioStub.h"
 #endif
 
-
 // GUItool: begin automatically generated code
 AudioSynthWaveformDc     auDC_PITCHENV;  //xy=157,1539.5
 AudioEffectEnvelope      auENV_PITCH_V2; //xy=212,1635.5
@@ -70,7 +69,7 @@ AudioEffectMultiply      auMULT_AM_POST_V2a; //xy=1457,1312.5
 AudioEffectMultiply      auMULT_AM_POST_V3a; //xy=1458,1246.5
 AudioSynthNoiseWhite     auNOISE_WHITE;  //xy=1550,1559.5
 AudioSynthNoisePink      auNOISE_PINK;   //xy=1557,1593.5
-AudioMixer4              auMIXER_NOISE;  //xy=1674,1657.5
+AudioMixer4              auMIXER_NOISE;  //xy=1649.5555267333984,1657.499984741211
 AudioMixer4              auMIXER_WAVE_V3a; //xy=1724,1251.5
 AudioMixer4              auMIXER_WAVE_V4a; //xy=1725,1188.5
 AudioMixer4              auMIXER_WAVE_V2a; //xy=1725,1316.5
@@ -113,11 +112,11 @@ AudioFilterLadder        auFILTER_LADDER_V2; //xy=2695,1824.5
 AudioFilterLadder        auFILTER_LADDER_V1; //xy=2697,1635.5
 AudioFilterLadder        auFILTER_LADDER_V3; //xy=2698,1979.5
 AudioFilterLadder        auFILTER_LADDER_V4; //xy=2698,2140.5
-AudioSynthWaveformDc     auDC_AMPENV;    //xy=2790,1163.5
-AudioEffectEnvelope      auENV_AMP_V1;   //xy=2971,1298.5
-AudioEffectEnvelope      auENV_AMP_V2;   //xy=2971,1333.5
-AudioEffectEnvelope      auENV_AMP_V3;   //xy=2971,1367.5
-AudioEffectEnvelope      auENV_AMP_V4;   //xy=2971,1401.5
+AudioSynthWaveformDc     auDC_AMPENV;    //xy=2729.841262817383,1201.1189985275269
+AudioEffectEnvelope      auENV_AMP_V1;   //xy=2948.142738342285,1288.499942779541
+AudioEffectEnvelope      auENV_AMP_V2;   //xy=2948.142738342285,1323.499942779541
+AudioEffectEnvelope      auENV_AMP_V3;   //xy=2948.142738342285,1357.499942779541
+AudioEffectEnvelope      auENV_AMP_V4;   //xy=2948.142738342285,1391.499942779541
 AudioSynthWaveformModulated auLFO_AMP;      //xy=2977,1229.5
 AudioMixer4              auMIXER_FILTER_BLOCK_V2; //xy=3005,1671.5
 AudioMixer4              auMIXER_FILTER_BLOCK_V3; //xy=3005,1735.5
@@ -135,6 +134,7 @@ AudioAmplifier           auAMP_POST_FILTER_V1; //xy=3276,1651.5
 AudioAmplifier           auAMP_POST_FILTER_V2; //xy=3276,1687.5
 AudioAmplifier           auAMP_MASTER_GAIN_L; //xy=3321,2021.5
 AudioAmplifier           auAMP_MASTER_GAIN_R; //xy=3321,2061.5
+AudioMixer4              auMIXER_AMPMOD_TOTAL;         //xy=3530.0001487731934,1324.2856216430664
 AudioEffectMultiply      auMULT_AENV_POST_V2; //xy=3550,1689.5
 AudioEffectMultiply      auMULT_AENV_POST_V3; //xy=3550,1723.5
 AudioEffectMultiply      auMULT_AENV_POST_V4; //xy=3550,1758.5
@@ -143,6 +143,9 @@ AudioAnalyzePeak         auPEAK_R;       //xy=3550,2117.5
 AudioAnalyzePeak         auPEAK_L;       //xy=3551,1975.5
 AudioOutputUSB           auSTEREO_OUT;   //xy=3571,2079.5
 AudioMixer4              auMIXER_SCOPE;  //xy=3575,2026.5
+AudioAnalyzePeak         auPEAK_AMPMOD_TOTAL;          //xy=3659.999797821045,1231.4286012649536
+AudioMixer4              auMixer_AM_POST;         //xy=3838.5712928771973,1627.1428470611572
+AudioAnalyzePeak         auPEAK_AM_POST;          //xy=3899.999969482422,1552.8571691513062
 AudioConnection          patchCord1(auDC_PITCHENV, auENV_PITCH_V1);
 AudioConnection          patchCord2(auDC_PITCHENV, auENV_PITCH_V2);
 AudioConnection          patchCord3(auDC_PITCHENV, auENV_PITCH_V3);
@@ -349,25 +352,35 @@ AudioConnection          patchCord203(auMIXER_FILTER_BLOCK_V1, auAMP_POST_FILTER
 AudioConnection          patchCord204(auMIXER_FINAL_R, auAMP_MASTER_GAIN_R);
 AudioConnection          patchCord205(auMIXER_FINAL_L, auAMP_MASTER_GAIN_L);
 AudioConnection          patchCord206(_auMIXER_AMPMOD_V1, 0, auMULT_AENV_POST_V1, 1);
-AudioConnection          patchCord207(_auMIXER_AMPMOD_V2, 0, auMULT_AENV_POST_V2, 1);
-AudioConnection          patchCord208(_auMIXER_AMPMOD_V3, 0, auMULT_AENV_POST_V3, 1);
-AudioConnection          patchCord209(_auMIXER_AMPMOD_V4, 0, auMULT_AENV_POST_V4, 1);
-AudioConnection          patchCord210(auAMP_POST_FILTER_V3, 0, auMULT_AENV_POST_V3, 0);
-AudioConnection          patchCord211(auAMP_POST_FILTER_V4, 0, auMULT_AENV_POST_V4, 0);
-AudioConnection          patchCord212(auAMP_POST_FILTER_V1, 0, auMULT_AENV_POST_V1, 0);
-AudioConnection          patchCord213(auAMP_POST_FILTER_V2, 0, auMULT_AENV_POST_V2, 0);
-AudioConnection          patchCord214(auAMP_MASTER_GAIN_L, auPEAK_L);
-AudioConnection          patchCord215(auAMP_MASTER_GAIN_L, 0, auSTEREO_OUT, 0);
-AudioConnection          patchCord216(auAMP_MASTER_GAIN_L, 0, auMIXER_SCOPE, 0);
-AudioConnection          patchCord217(auAMP_MASTER_GAIN_R, 0, auSTEREO_OUT, 1);
-AudioConnection          patchCord218(auAMP_MASTER_GAIN_R, auPEAK_R);
-AudioConnection          patchCord219(auAMP_MASTER_GAIN_R, 0, auMIXER_SCOPE, 1);
-AudioConnection          patchCord220(auMULT_AENV_POST_V2, 0, auMIXER_FINAL_L, 1);
-AudioConnection          patchCord221(auMULT_AENV_POST_V2, 0, auMIXER_FINAL_R, 1);
-AudioConnection          patchCord222(auMULT_AENV_POST_V3, 0, auMIXER_FINAL_L, 2);
-AudioConnection          patchCord223(auMULT_AENV_POST_V3, 0, auMIXER_FINAL_R, 2);
-AudioConnection          patchCord224(auMULT_AENV_POST_V4, 0, auMIXER_FINAL_R, 3);
-AudioConnection          patchCord225(auMULT_AENV_POST_V4, 0, auMIXER_FINAL_L, 3);
-AudioConnection          patchCord226(auMULT_AENV_POST_V1, 0, auMIXER_FINAL_L, 0);
-AudioConnection          patchCord227(auMULT_AENV_POST_V1, 0, auMIXER_FINAL_R, 0);
+AudioConnection          patchCord207(_auMIXER_AMPMOD_V1, 0, auMIXER_AMPMOD_TOTAL, 0);
+AudioConnection          patchCord208(_auMIXER_AMPMOD_V2, 0, auMULT_AENV_POST_V2, 1);
+AudioConnection          patchCord209(_auMIXER_AMPMOD_V2, 0, auMIXER_AMPMOD_TOTAL, 1);
+AudioConnection          patchCord210(_auMIXER_AMPMOD_V3, 0, auMULT_AENV_POST_V3, 1);
+AudioConnection          patchCord211(_auMIXER_AMPMOD_V3, 0, auMIXER_AMPMOD_TOTAL, 2);
+AudioConnection          patchCord212(_auMIXER_AMPMOD_V4, 0, auMULT_AENV_POST_V4, 1);
+AudioConnection          patchCord213(_auMIXER_AMPMOD_V4, 0, auMIXER_AMPMOD_TOTAL, 3);
+AudioConnection          patchCord214(auAMP_POST_FILTER_V3, 0, auMULT_AENV_POST_V3, 0);
+AudioConnection          patchCord215(auAMP_POST_FILTER_V4, 0, auMULT_AENV_POST_V4, 0);
+AudioConnection          patchCord216(auAMP_POST_FILTER_V1, 0, auMULT_AENV_POST_V1, 0);
+AudioConnection          patchCord217(auAMP_POST_FILTER_V2, 0, auMULT_AENV_POST_V2, 0);
+AudioConnection          patchCord218(auAMP_MASTER_GAIN_L, auPEAK_L);
+AudioConnection          patchCord219(auAMP_MASTER_GAIN_L, 0, auSTEREO_OUT, 0);
+AudioConnection          patchCord220(auAMP_MASTER_GAIN_L, 0, auMIXER_SCOPE, 0);
+AudioConnection          patchCord221(auAMP_MASTER_GAIN_R, 0, auSTEREO_OUT, 1);
+AudioConnection          patchCord222(auAMP_MASTER_GAIN_R, auPEAK_R);
+AudioConnection          patchCord223(auAMP_MASTER_GAIN_R, 0, auMIXER_SCOPE, 1);
+AudioConnection          patchCord224(auMIXER_AMPMOD_TOTAL, auPEAK_AMPMOD_TOTAL);
+AudioConnection          patchCord225(auMULT_AENV_POST_V2, 0, auMIXER_FINAL_L, 1);
+AudioConnection          patchCord226(auMULT_AENV_POST_V2, 0, auMIXER_FINAL_R, 1);
+AudioConnection          patchCord227(auMULT_AENV_POST_V2, 0, auMixer_AM_POST, 1);
+AudioConnection          patchCord228(auMULT_AENV_POST_V3, 0, auMIXER_FINAL_L, 2);
+AudioConnection          patchCord229(auMULT_AENV_POST_V3, 0, auMIXER_FINAL_R, 2);
+AudioConnection          patchCord230(auMULT_AENV_POST_V3, 0, auMixer_AM_POST, 2);
+AudioConnection          patchCord231(auMULT_AENV_POST_V4, 0, auMIXER_FINAL_R, 3);
+AudioConnection          patchCord232(auMULT_AENV_POST_V4, 0, auMIXER_FINAL_L, 3);
+AudioConnection          patchCord233(auMULT_AENV_POST_V4, 0, auMixer_AM_POST, 3);
+AudioConnection          patchCord234(auMULT_AENV_POST_V1, 0, auMIXER_FINAL_L, 0);
+AudioConnection          patchCord235(auMULT_AENV_POST_V1, 0, auMIXER_FINAL_R, 0);
+AudioConnection          patchCord236(auMULT_AENV_POST_V1, 0, auMixer_AM_POST, 0);
+AudioConnection          patchCord237(auMixer_AM_POST, auPEAK_AM_POST);
 // GUItool: end automatically generated code

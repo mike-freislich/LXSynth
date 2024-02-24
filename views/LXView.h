@@ -6,9 +6,9 @@ class LXView : public CollectionLiteItem<ViewKeys>
 {
 public:
     LXView(ViewKeys key) : CollectionLiteItem(key) {}
-    ItemType getType() { return ItemType::TLXView; }
+     const ItemType getType() { return ItemType::TLXView; }
 
-    void attachParameters(std::vector<LXParameter *> &parameters)
+     void attachParameters(std::vector<LXParameter *> &parameters)
     {
         _parameters = parameters;
     }
@@ -22,7 +22,7 @@ public:
 protected:
     std::vector<LXParameter *> _parameters;
     
-    bool didChange()
+     bool didChange()
     {
         for (auto p : _parameters)
             if (p->changed(false))

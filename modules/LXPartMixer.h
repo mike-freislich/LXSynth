@@ -9,9 +9,9 @@ public:
         _partPan = Parameters[ParmKeys::partpan_ab];
         attachAudioUnits({&auMIXER_PRESHAPE_V1, &auMIXER_PRESHAPE_V2, &auMIXER_PRESHAPE_V3, &auMIXER_PRESHAPE_V4});
     }
-    ItemType getType() override { return ItemType::TLXPartMixer; }
+    virtual  const ItemType getType() override { return ItemType::TLXPartMixer; }
 
-    void update() override
+     void update() override
     {
         LXModule::update();
         if (_partPan->changed(true))
@@ -28,6 +28,8 @@ public:
             }
         }
     }
+
+    
 
 private:
     LXParameter *_partPan;

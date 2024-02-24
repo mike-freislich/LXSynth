@@ -17,28 +17,28 @@ public:
         _masterAmpR = &auAMP_MASTER_GAIN_R;
     }
 
-    ItemType getType() override { return ItemType::TLXVoiceMixer; }
+    virtual  const ItemType getType() override { return ItemType::TLXVoiceMixer; }
 
-    void getStereoGainLR(float gain, float pan, float &left, float &right)
+     void getStereoGainLR(float gain, float pan, float &left, float &right)
     {
         left = (1 - pan) * gain;
         right = (1 - left) * gain;
     }
 
-    float getVoicePan(uint8_t voice)
+     float getVoicePan(uint8_t voice)
     {
         voice = clampf<uint8_t>(voice, 0, _voicePans.size());
         return _voicePans[voice]->getValue();
     }
 
-    float getVoiceGain(uint8_t voice)
+     float getVoiceGain(uint8_t voice)
     {
         voice = clampf<uint8_t>(voice, 0, _voiceGains.size());
         return _voiceGains[voice]->getValue();
     }
 
-    float getMasterPan() { return _masterPan->getValue(); }
-    float getMasterGain() { return _masterGain->getValue(); }
+     float getMasterPan() { return _masterPan->getValue(); }
+     float getMasterGain() { return _masterGain->getValue(); }
 
     /**
      * @brief
@@ -46,7 +46,7 @@ public:
      * @param channel 4 channels : 0-3
      * @param position  L<<0.0 <<0.5>> 1.0>>R
      */
-    void voicePan(uint8_t voice, float position)
+     void voicePan(uint8_t voice, float position)
     {
         if (voice >= 0 && voice < _voicePans.size())
         {
@@ -55,7 +55,7 @@ public:
         }
     }
 
-    void voiceGain(uint8_t voice, float value)
+     void voiceGain(uint8_t voice, float value)
     {
         if (voice >= 0 && voice < _voiceGains.size())
         {
@@ -64,10 +64,10 @@ public:
         }
     }
 
-    void masterPan(float value) { _masterPan->setValue(clampf<float>(value, 0, 1.0f)); }
-    void masterGain(float value) { _masterGain->setValue(clampf<float>(value, 0, 1.5f)); }
+     void masterPan(float value) { _masterPan->setValue(clampf<float>(value, 0, 1.0f)); }
+     void masterGain(float value) { _masterGain->setValue(clampf<float>(value, 0, 1.5f)); }
 
-    void update() override
+     void update() override
     {
         LXModule::update();
 

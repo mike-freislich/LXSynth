@@ -1,7 +1,7 @@
 #pragma once
 #include "ParmKeys.h"
 
-enum ItemType
+enum ItemType 
 {
     TCollectionLiteItem,
     TLXParameter,
@@ -60,9 +60,9 @@ public:
     KeyType key;
     CollectionLiteItem(KeyType key) : key(key) {}
     virtual ~CollectionLiteItem() {}
-    virtual ItemType getType() { return ItemType::TCollectionLiteItem; }
-    bool isType(ItemType type) { return type == getType(); }
-    const char *typeName() { return ItemTypeToName(getType()); }    
-    virtual void update() { }    
+    virtual const ItemType getType()  { return ItemType::TCollectionLiteItem; }
+     bool isType(ItemType type) { return type == getType(); }
+     const char *typeName() { return ItemTypeToName(getType()); }    
+     virtual void update() { }    
     //virtual void serialize(PS::StringBuilder *sb) {}
 };
