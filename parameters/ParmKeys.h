@@ -22,7 +22,6 @@ enum ParmKeys
     aenv_sustain = 204,
     aenv_release = 205,
     aenv_invert = 206,
-    
 
     alfo_shape = 210,
     alfo_freq = 211,
@@ -53,10 +52,12 @@ enum ParmKeys
     osc_a_freq = 501,
     osc_a_shape = 502,
     osc_a_detune = 503,
+    osc_a_pwm_octaves = 504,
     osc_b_amp = 520,
     osc_b_freq = 521,
     osc_b_shape = 522,
     osc_b_detune = 523,
+    osc_b_pwm_octaves = 524,
 
     xmod_amount = 540,
 
@@ -150,10 +151,12 @@ FLASHMEM const char * parmKey_cstr(ParmKeys key)
     case osc_a_freq : return "osc_a_freq";
     case osc_a_shape : return "osc_a_shape";
     case osc_a_detune : return "osc_a_detune";
+    case osc_a_pwm_octaves : return "osc_a_pwm_octaves";
     case osc_b_amp : return "osc_b_amp";
     case osc_b_freq : return "osc_b_freq";
     case osc_b_shape : return "osc_b_shape";
     case osc_b_detune : return "osc_b_detune";
+    case osc_b_pwm_octaves : return "osc_b_pwm_octaves";
 
     case xmod_amount : return "xmod_amount";
 

@@ -2,14 +2,20 @@
 
 enum ControllerPins
 {
+    // display board : data pots
+    POT_Data1 = 0,
+    POT_Data2 = 1,
+    POT_Data3 = 2,
+    POT_Data4 = 3,
+
     // envelope board (v1)
-    POT_V1_Fader1 = 36,
-    POT_V1_Fader2 = 37,
-    POT_V1_Fader3 = 38,
-    POT_V1_Fader4 = 39,
-    POT_V1_EnvLevel = 4,
-    POT_V1_Cutoff = 5,
-    POT_V1_Resonance = 6,
+    B1_POT_1 = 32,
+    B1_POT_2 = 33,
+    B1_POT_3 = 34,
+    B1_POT_Fader1 = 36,
+    B1_POT_Fader2 = 37,
+    B1_POT_Fader3 = 38,
+    B1_POT_Fader4 = 39,
 
     // vco board (v1)
     POT_V1_Waveform = 7,
@@ -22,11 +28,7 @@ enum ControllerPins
     POT_V1_Pan = 14,
     POT_V1_ShaperWave = 15,
     POT_V1_ShaperCurve = 16,
-    POT_V1_XmodSend = 17,
+    POT_V1_XmodSend = 17
 
-    // display board : data pots
-    POT_Data1 = 18,
-    POT_Data2 = 19,
-    POT_Data3 = 20,
-    POT_Data4 = 21
+    
 };

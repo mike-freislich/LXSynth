@@ -14,10 +14,10 @@ float convertToAudio(float linearValue, float linearMin, float linearMax, float 
     return audioValue;    
 }
 
-enum ParameterCurve
+enum ParameterTaper
 {
-    CURVE_LINEAR,
-    CURVE_AUDIO
+    TAPER_LINEAR,
+    TAPER_AUDIO
 };
 
 class LXParameter : public CollectionLiteItem<ParmKeys>
@@ -26,9 +26,9 @@ public:
     LXParameter(ParmKeys key) : CollectionLiteItem(key) {}
     const ItemType getType() override { return ItemType::TLXParameter; }
 
-    LXParameter *curve(const ParameterCurve &curve)
+    LXParameter *taper(const ParameterTaper &taper)
     {
-        _curve = curve;
+        _curve = taper;
         return this;
     }
 
@@ -57,7 +57,7 @@ public:
     {
         float v = value_;
 
-        if (_curve == ParameterCurve::CURVE_AUDIO)
+        if (_curve == ParameterTaper::TAPER_AUDIO)
             v = convertToAudio(value_, min_, max_, min_, max_);
         
         return _inverted ? max_ - v : v;
@@ -95,5 +95,5 @@ public:
 private:
     float value_ = 0, min_ = 0, max_ = 0;
     bool changed_ = false, _firstSetting = true, _inverted = false;    
-    ParameterCurve _curve = CURVE_LINEAR;    
+    ParameterTaper _curve = TAPER_LINEAR;    
 };

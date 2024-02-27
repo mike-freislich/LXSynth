@@ -5,7 +5,7 @@ class LXOscillator : public LXModule
 {
 public:
     LXOscillator(ModKeys key) : LXModule(key) {}
-    virtual  const ItemType getType() override { return ItemType::TLXOscillator; }
+    virtual const ItemType getType() override { return ItemType::TLXOscillator; }
 
     void afterAttachParameters() override
     {
@@ -13,9 +13,10 @@ public:
         _detune = _parameters[1];
         _freq = _parameters[2];
         _shape = _parameters[3];
+        _pwm_octaves = _parameters[4];
     }
 
-     void update() override
+    void update() override
     {
         LXModule::update();
         if (_shape->changed(true))
@@ -23,22 +24,28 @@ public:
             _amp->changed(true);
             _detune->changed(true);
             _freq->changed(true);
-            LOG("Shape Changed: " << _shape->getValue());
+            
+            int index = 0;
             for (auto au : _audioUnits)
-            {
+            {                
                 AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);
-                wave->begin( // TODO may require audio interrupts to halt for this
-                    _amp->getValue(), _freq->getValue() + _detune->getValue(),
+                AudioNoInterrupts();
+                wave->begin(
+                    _amp->getValue(), _freq->getValue() + _detune->getValue() * index,
                     waves[(uint8_t)_shape->getValue()]);
+                AudioInterrupts();
+                printf("Osc %s Wave : shape(%d), amp(%d), freq(%d)\n", 
+                    modKey_cstr(key), waves[(uint8_t)_shape->getValue()], (uint8_t)(_amp->getValue()*100), (uint16_t)_freq->getValue());
+                
+                index ++;
             }
         }
         else
         {
             if (_detune->changed(true) || _freq->changed(true))
             {
-                float freq = _freq->getValue() + _detune->getValue();
-                LOG("Frequency Changed : " << _freq->getValue() << " with detune " << _detune->getValue());
-
+                float freq = _freq->getValue(); // * _detune->getValue();
+                // LOG("Frequency Changed : " << _freq->getValue() << " with detune " << _detune->getValue());
                 for (auto au : _audioUnits)
                 {
                     AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);
@@ -47,7 +54,7 @@ public:
             }
             if (_amp->changed(true))
             {
-                LOG("Amplitude Changed : " << _amp->getValue());
+                // LOG("Amplitude Changed : " << _amp->getValue());
                 for (auto au : _audioUnits)
                 {
                     AudioSynthWaveformModulated *wave = static_cast<AudioSynthWaveformModulated *>(au);
@@ -57,7 +64,7 @@ public:
         }
     }
 
-     void begin()
+    void begin()
     {
 
         for (auto au : _audioUnits)
@@ -67,18 +74,16 @@ public:
         }
     }
 
-     void amplitude(float gain) { _amp->setValue(gain); }
-     void detune(float amount) { _detune->setValue(amount); }
-     void frequency(float freq) { _freq->setValue(freq); }
-     void shape(float shape) { _shape->setValue(shape); }
+    void amplitude(float gain) { _amp->setValue(gain); }
+    void detune(float amount) { _detune->setValue(amount); }
+    void frequency(float freq) { _freq->setValue(freq); }
+    void shape(float shape) { _shape->setValue(shape); }
 
-     float getAmplitude() { return _amp->getValue(); }
-     float getDetune() { return _detune->getValue(); }
-     float getFrequency() { return _freq->getValue(); }
-     float getShape() { return _shape->getValue(); }
-    
-
+    float getAmplitude() { return _amp->getValue(); }
+    float getDetune() { return _detune->getValue(); }
+    float getFrequency() { return _freq->getValue(); }
+    float getShape() { return _shape->getValue(); }
 
 private:
-    LXParameter *_amp, *_detune, *_freq, *_shape;
+    LXParameter *_amp, *_detune, *_freq, *_shape, *_pwm_octaves;
 };

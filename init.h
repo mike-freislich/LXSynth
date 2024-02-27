@@ -9,13 +9,36 @@
 #include "LXMidi.h"
 #include "waves.h"
 
-FLASHMEM void storeParameter(const char *parm) { LOG("storing :" << parm); }
+FLASHMEM void storeParameter(const char *parm) { LOG(F("storing :") << parm); }
 
 FLASHMEM void initParameters()
 {
     LOG("[INIT] Parameters");
 
-    // pitch modulator
+    // OSC A
+    Parameters.add(osc_a_shape)->setRange(0, 11)->setValue(WAVEFORM_SQUARE);
+    Parameters.add(osc_a_amp)->setRange(0, 1)->setValue(1.0);
+    Parameters.add(osc_a_freq)->setRange(0.1, 20000)->setValue(400);
+    Parameters.add(osc_a_detune)->setRange(0, 1)->setValue(0.1);
+    Parameters.add(osc_a_pwm_octaves)->setRange(0,12)->setValue(10);
+
+    // OSC B
+    Parameters.add(osc_b_shape)->setRange(0, 11)->setValue(WAVEFORM_SAWTOOTH);
+    Parameters.add(osc_b_amp)->setRange(0, 1)->setValue(1);
+    Parameters.add(osc_b_freq)->setRange(0.1, 20000)->setValue(400);
+    Parameters.add(osc_b_detune)->setRange(0, 1)->setValue(0.1);
+    Parameters.add(osc_b_pwm_octaves)->setRange(0,12)->setValue(10);
+
+    // AMPLITUDE ENVELOPE
+    Parameters.add(ParmKeys::aenv_amount)->setRange(0, 1)->setValue(0.25f)->taper(TAPER_AUDIO);
+    Parameters.add(ParmKeys::aenv_attack)->setRange(0, 10000)->setValue(1)->taper(TAPER_AUDIO);
+    Parameters.add(ParmKeys::aenv_hold)->setRange(0, 10000)->setValue(0)->taper(TAPER_AUDIO);
+    Parameters.add(ParmKeys::aenv_decay)->setRange(0, 10000)->setValue(150)->taper(TAPER_AUDIO);
+    Parameters.add(ParmKeys::aenv_sustain)->setRange(0, 1)->setValue(0.2f)->taper(TAPER_AUDIO);
+    Parameters.add(ParmKeys::aenv_release)->setRange(0, 10000)->setValue(100)->taper(TAPER_AUDIO);
+    Parameters.add(ParmKeys::aenv_invert)->setRange(0, 1)->setValue(0)->taper(TAPER_AUDIO);
+
+    // PITCH ENVELOPE
     Parameters.add(ParmKeys::penv_amount)->setRange(0, 1)->setValue(0);
     Parameters.add(ParmKeys::penv_attack)->setRange(0, 10000)->setValue(1);
     Parameters.add(ParmKeys::penv_hold)->setRange(0, 10000)->setValue(0);
@@ -23,65 +46,48 @@ FLASHMEM void initParameters()
     Parameters.add(ParmKeys::penv_sustain)->setRange(0, 1)->setValue(1);
     Parameters.add(ParmKeys::penv_release)->setRange(0, 10000)->setValue(1);
     Parameters.add(ParmKeys::penv_invert)->setRange(0, 1)->setValue(0);
-    // pitch LFO
-    Parameters.add(ParmKeys::plfo_amount)->setRange(0, 1)->setValue(0.0);
-    Parameters.add(ParmKeys::plfo_freq)->setRange(0, 3000)->setValue(10);
-    Parameters.add(ParmKeys::plfo_shape)->setRange(0, 11)->setValue(1);
-    Parameters.add(ParmKeys::pitch_bend)->setRange(0, 1)->setValue(0);
 
-    // AMPLITUDE ENVELOPE
-    Parameters.add(ParmKeys::aenv_amount)->setRange(0, 1)->setValue(0.25f);
-    Parameters.add(ParmKeys::aenv_attack)->setRange(0, 10000)->setValue(1);
-    Parameters.add(ParmKeys::aenv_hold)->setRange(0, 10000)->setValue(0);
-    Parameters.add(ParmKeys::aenv_decay)->setRange(0, 10000)->setValue(150);
-    Parameters.add(ParmKeys::aenv_sustain)->setRange(0, 1)->setValue(0.2f);
-    Parameters.add(ParmKeys::aenv_release)->setRange(0, 10000)->setValue(100);
-    Parameters.add(ParmKeys::aenv_invert)->setRange(0, 1)->setValue(0);
-    
+    // FILTER ENVELOPE
+    Parameters.add(ParmKeys::fenv_amount)->setRange(0, 1)->setValue(0);
+    Parameters.add(ParmKeys::fenv_attack)->setRange(0, 10000)->setValue(0);
+    Parameters.add(ParmKeys::fenv_hold)->setRange(0, 10000)->setValue(0);
+    Parameters.add(ParmKeys::fenv_decay)->setRange(0, 10000)->setValue(0);
+    Parameters.add(ParmKeys::fenv_sustain)->setRange(0, 1)->setValue(1);
+    Parameters.add(ParmKeys::fenv_release)->setRange(0, 10000)->setValue(100);
+    Parameters.add(ParmKeys::fenv_invert)->setRange(0, 1)->setValue(0);
+
     // AMPLITUDE LFO
     Parameters.add(ParmKeys::alfo_amount)->setRange(0, 1)->setValue(0);
     Parameters.add(ParmKeys::alfo_freq)->setRange(0, 3000)->setValue(1);
     Parameters.add(ParmKeys::alfo_shape)->setRange(0, 11)->setValue(1);
     Parameters.add(ParmKeys::amp_bend)->setRange(0, 1)->setValue(0);
 
-    // frequency modulator
-    Parameters.add(ParmKeys::fenv_amount)->setRange(0, 1)->setValue(0);
-    Parameters.add(ParmKeys::fenv_attack)->setRange(0, 10000)->setValue(1);
-    Parameters.add(ParmKeys::fenv_hold)->setRange(0, 10000)->setValue(0);
-    Parameters.add(ParmKeys::fenv_decay)->setRange(0, 10000)->setValue(1);
-    Parameters.add(ParmKeys::fenv_sustain)->setRange(0, 1)->setValue(1);
-    Parameters.add(ParmKeys::fenv_release)->setRange(0, 10000)->setValue(1);
-    Parameters.add(ParmKeys::fenv_invert)->setRange(0, 1)->setValue(0);
-    // frequency LFO
-    Parameters.add(ParmKeys::flfo_amount)->setRange(0, 1)->setValue(1);
-    Parameters.add(ParmKeys::flfo_freq)->setRange(0, 3000)->setValue(8);
-    Parameters.add(ParmKeys::flfo_shape)->setRange(0, 11)->setValue(WAVEFORM_SAMPLE_HOLD+1);
+    // PITCH LFO
+    Parameters.add(ParmKeys::plfo_amount)->setRange(0, 1)->setValue(0);
+    Parameters.add(ParmKeys::plfo_freq)->setRange(0, 3000)->setValue(20);
+    Parameters.add(ParmKeys::plfo_shape)->setRange(0, 11)->setValue(1);
+    Parameters.add(ParmKeys::pitch_bend)->setRange(0, 1)->setValue(0);
+
+    // FILTER LFO
+    Parameters.add(ParmKeys::flfo_amount)->setRange(0, 1)->setValue(0);
+    Parameters.add(ParmKeys::flfo_freq)->setRange(0, 3000)->setValue(0.1);
+    Parameters.add(ParmKeys::flfo_shape)->setRange(0, 11)->setValue(WAVEFORM_SINE);
     Parameters.add(ParmKeys::filter_bend)->setRange(0, 1)->setValue(0);
 
-    // oscillators
-    Parameters.add(ParmKeys::osc_a_shape)->setRange(0, 11)->setValue(WAVEFORM_SQUARE);
-    Parameters.add(ParmKeys::osc_a_amp)->setRange(0, 1)->setValue(1.0);
-    Parameters.add(ParmKeys::osc_a_freq)->setRange(0.1, 3000)->setValue(400);
-    Parameters.add(ParmKeys::osc_a_detune)->setRange(-200, 200)->setValue(0);
-    Parameters.add(ParmKeys::osc_b_shape)->setRange(0, 11)->setValue(WAVEFORM_SAWTOOTH);
-    Parameters.add(ParmKeys::osc_b_amp)->setRange(0, 1)->setValue(0);
-    Parameters.add(ParmKeys::osc_b_freq)->setRange(0.1, 3000)->setValue(400);
-    Parameters.add(ParmKeys::osc_b_detune)->setRange(-200, 200)->setValue(0);
-
-    // noise
-    Parameters.add(ParmKeys::noise_level)->setRange(0, 1)->setValue(1.0); // 0 = off ... 1 = on
-    Parameters.add(ParmKeys::noise_type)->setRange(0, 1)->setValue(0);    // 0 = white ... 1 = pink
+    // NOISE
+    Parameters.add(ParmKeys::noise_level)->setRange(0, 1)->setValue(1); // 0 = off ... 1 = on
+    Parameters.add(ParmKeys::noise_type)->setRange(0, 1)->setValue(1);  // 0 = white ... 1 = pink
 
     // PWM
     Parameters.add(ParmKeys::pwm_a_shape)->setRange(0, 11)->setValue(WAVEFORM_PULSE); // pulse
-    Parameters.add(ParmKeys::pwm_a_freq)->setRange(0, 20000)->setValue(4);            // 1 hertz
-    Parameters.add(ParmKeys::pwm_a_gain)->setRange(0, 1)->setValue(0);                // 0 gain = off
+    Parameters.add(ParmKeys::pwm_a_freq)->setRange(0, 127)->setValue(10);            // 1 hertz
+    Parameters.add(ParmKeys::pwm_a_gain)->setRange(0, 1)->setValue(1);                // 0 gain = off
     Parameters.add(ParmKeys::pwm_b_shape)->setRange(0, 11)->setValue(WAVEFORM_PULSE); // pulse
-    Parameters.add(ParmKeys::pwm_b_freq)->setRange(0, 20000)->setValue(3);            // 1 hertz
-    Parameters.add(ParmKeys::pwm_b_gain)->setRange(0, 1)->setValue(0);                // 0 gain = off
+    Parameters.add(ParmKeys::pwm_b_freq)->setRange(0, 127)->setValue(10);            // 1 hertz
+    Parameters.add(ParmKeys::pwm_b_gain)->setRange(0, 1)->setValue(1);                // 0 gain = off
 
     // XMod
-    Parameters.add(ParmKeys::xmod_amount)->setRange(0, 1)->setValue(0.5); // no cross mod (0.5)
+    Parameters.add(ParmKeys::xmod_amount)->setRange(0, 1)->setValue(1.0); // no cross mod (0.5)
 
     // RingMod
     Parameters.add(ParmKeys::ring_shape)->setRange(0, 11)->setValue(0);   // sine
@@ -92,17 +98,17 @@ FLASHMEM void initParameters()
     Parameters.add(ParmKeys::shaper_pregain)->setRange(0, 2)->setValue(1.0); // preamp
     Parameters.add(ParmKeys::shaper_curve)->setRange(0, 29)->setValue(9);    // shape
     Parameters.add(ParmKeys::shaper_bypass)->setRange(0, 1)->setValue(0);    // bypass set
-    
+
     // filter
     Parameters.add(ParmKeys::filter_type)->setRange(0, 3)->setValue(3);       // LPF 0, BPF 1, HPF 2, LADDER 3
-    Parameters.add(ParmKeys::filter_freq)->setRange(0, 1000)->setValue(30000);  // 20000 Hz
+    Parameters.add(ParmKeys::filter_freq)->setRange(0, 20000)->setValue(400); // 20000 Hz
     Parameters.add(ParmKeys::filter_res)->setRange(0.7, 5.0)->setValue(0.7);  // Q = 0.7 ... 5.0
     Parameters.add(ParmKeys::filter_octaves)->setRange(0, 7)->setValue(1.0);  // 0 ... 7
     Parameters.add(ParmKeys::filter_postgain)->setRange(0, 2)->setValue(1.0); // 1.0 = pass thru
 
     // master gain
-    Parameters.add(ParmKeys::master_gain)->setRange(0, 1)->setValue(1.0);
-    Parameters.add(ParmKeys::master_pan)->setRange(0, 1)->setValue(0.5);
+    Parameters.add(ParmKeys::master_gain)->setRange(0, 1)->setValue(1.0)->taper(ParameterTaper::TAPER_AUDIO);
+    Parameters.add(ParmKeys::master_pan)->setRange(0, 1)->setValue(1.0);
 
     // part mixer
     Parameters.add(ParmKeys::partpan_ab)->setRange(0, 1)->setValue(0.5);
@@ -127,7 +133,7 @@ FLASHMEM void initParameters()
 
 FLASHMEM void initModules()
 {
-    LOG("[INIT] Modules");
+    LOG(F("[INIT] Modules"));
     // ModulatorBanks
     Modules.add<LXEnvModulatorBank>(ModKeys::AEnvModulator)
         ->attachParameters<LXEnvModulatorBank>(
@@ -165,10 +171,10 @@ FLASHMEM void initModules()
         ->attachPWMWave(&auWAVE_PWM_b);
 
     // Oscillators
-    Modules.add<LXOscillator>(ModKeys::OscillatorA)
+    Modules.add<LXOscillator>(OscillatorA)
         ->attachParameters<LXOscillator>({osc_a_amp, osc_a_detune, osc_a_freq, osc_a_shape})
         ->attachAudioUnits({&auDCO_V1a, &auDCO_V2a, &auDCO_V3a, &auDCO_V4a});
-    Modules.add<LXOscillator>(ModKeys::OscillatorB)
+    Modules.add<LXOscillator>(OscillatorB)
         ->attachParameters<LXOscillator>({osc_b_amp, osc_b_detune, osc_b_freq, osc_b_shape})
         ->attachAudioUnits({&auDCO_v1b, &auDCO_v2b, &auDCO_v3b, &auDCO_v4b});
 
@@ -184,12 +190,21 @@ FLASHMEM void initModules()
 
 FLASHMEM void initControllers()
 {
-    LOG("[INIT] Controllers");
-    Controllers.add<LXPotentiometer>(ContKeys::pot1)->attachParameters<LXPotentiometer>({ParmKeys::filter_freq})->setPin(POT_V1_Fader1);
-    Controllers.add<LXPotentiometer>(ContKeys::pot2)->attachParameters<LXPotentiometer>({osc_a_shape})->setPin(POT_V1_Fader2);
-    Controllers.add<LXPotentiometer>(ContKeys::pot3)->attachParameters<LXPotentiometer>({osc_a_amp, osc_b_amp})->setPin(POT_V1_Fader3);
-    // Controllers.add<LXPotentiometer>(ContKeys::pot4)->attachParameters<LXPotentiometer>({osc_a_detune, osc_b_detune})->setPin(POT_V1_Fader4);
-    //  Controllers.add<LXPotentiometer>(ContKeys::pot5)->attachParameters<LXPotentiometer>({})->setPin(14);
+    LOG(F("[INIT] Controllers"));
+    Controllers.add<LXPotentiometer>(b1_Fader1)->setPin(B1_POT_Fader1)->attachParameters({aenv_attack});
+    Controllers.add<LXPotentiometer>(b1_Fader2)->setPin(B1_POT_Fader2)->attachParameters({aenv_decay});
+    Controllers.add<LXPotentiometer>(b1_Fader3)->setPin(B1_POT_Fader3)->attachParameters({aenv_sustain});
+    Controllers.add<LXPotentiometer>(b1_Fader4)->setPin(B1_POT_Fader4)->attachParameters({aenv_release});
+    Controllers.add<LXPotentiometer>(b1_Pot1)->setPin(B1_POT_1)->attachParameters({osc_a_shape});
+    Controllers.add<LXPotentiometer>(b1_Pot2)->setPin(B1_POT_2)->attachParameters({osc_b_shape});
+    Controllers.add<LXPotentiometer>(b1_Pot3)->setPin(B1_POT_3)->attachParameters({pwm_a_freq, pwm_b_freq});
+
+    Controllers.add<LXPotentiometer>(potDataA)->setPin(POT_Data1)->attachParameters({filter_freq});
+    Controllers.add<LXPotentiometer>(potDataB)->setPin(POT_Data2)->attachParameters({filter_res});
+    Controllers.add<LXPotentiometer>(potDataC)->setPin(POT_Data3)->attachParameters({master_pan});
+    Controllers.add<LXPotentiometer>(potDataD)->setPin(POT_Data4)->attachParameters({master_gain});
+
+    //  Controllers.add<LXPotentiometer>(ContKeys::b1_Pot1)->attachParameters<LXPotentiometer>({})->setPin(14);
     //  Controllers.add<LXButton>(ContKeys::btnShift)->attachParameters<LXButton>({pressedShift})->setPin(30);
     //  Controllers.add<LXButton>(ContKeys::btnEnter)->attachParameters<LXButton>({pressedEnter})->setPin(31);
     //  Controllers.add<LXRotary>(ContKeys::rotA)->setPins(34, 35);

@@ -64,5 +64,5 @@
 //     const float twoPi = 2.0f * 3.14159f;
 //     double timeInSeconds = static_cast<double>(numMilliseconds) / 1000.0;
 //     double phase = twoPi * frequency * timeInSeconds + twoPi * phaseOffset;
-//     return amplitude * sinewave(phase);
+ return amplitude * sinewave(phase);
 // }

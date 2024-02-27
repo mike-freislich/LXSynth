@@ -18,3 +18,28 @@ enum ModKeys
     VoiceMixer = 220,
     MainAmp = 230
 };
+
+FLASHMEM const char * modKey_cstr(ModKeys key)
+{
+    switch (key)
+    {
+    case OscillatorA: return "OscillatorA"; 
+    case OscillatorB: return "OscillatorB";
+    case AEnvModulator: return "AEnvModulator";
+    case FEnvModulator: return "FEnvModulator";
+    case PEnvModulator: return "PEnvModulator";
+    case PulseWidthModA: return "PulseWidthModA";
+    case PulseWidthModB: return "PulseWidthModB";
+    case FilterBank: return "FilterBank";
+    case XModulator: return "XModulator";
+    case Shaper: return "Shaper";
+    case PartMixer: return "PartMixer";
+    case NoiseGen: return "NoiseGen";
+    case RingMod: return "RingMod";
+    case VoiceMixer: return "VoiceMixer";
+    case MainAmp: return "MainAmp";
+
+
+    default: return "unknown";
+    }
+}

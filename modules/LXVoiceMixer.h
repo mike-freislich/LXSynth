@@ -21,8 +21,10 @@ public:
 
      void getStereoGainLR(float gain, float pan, float &left, float &right)
     {
-        left = (1 - pan) * gain;
-        right = (1 - left) * gain;
+        left = (1 - pan);
+        right = (1 - left);
+        left *= gain;
+        right *= gain;
     }
 
      float getVoicePan(uint8_t voice)

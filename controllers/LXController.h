@@ -10,7 +10,7 @@
 #define ANALOG_READ_BITS 10
 #define POT_AVERAGE_SAMPLING 32
 
-//static bool called = false;
+// static bool called = false;
 
 class LXController : public CollectionLiteItem<ContKeys>
 {
@@ -20,10 +20,10 @@ public:
         LXController::callOnce();
         _debounceTimer.start();
     }
-    virtual  const ItemType getType() override { return ItemType::TLXController; }
+    virtual const ItemType getType() override { return ItemType::TLXController; }
 
     template <typename ControllerType>
-     ControllerType *attachParameters(const std::vector<ParmKeys> &parmKeys)
+    ControllerType *attachParameters(const std::vector<ParmKeys> &parmKeys)
     {
         _parameters.clear();
         for (auto pkey : parmKeys)
@@ -41,7 +41,7 @@ public:
         if (checkDebounce())
             updateController();
     }
-     virtual void updateController()
+    virtual void updateController()
     {
         int v = readValue();
         for (auto p : _parameters)
@@ -49,7 +49,7 @@ public:
     }
 
     template <typename T>
-     T *setup(uint16_t pin, uint32_t debounceMS, int rangeMin, int rangeMax)
+    T *setup(uint16_t pin, uint32_t debounceMS, int rangeMin, int rangeMax)
     {
         debounceMs(debounceMS);
         setPin(pin);
@@ -57,21 +57,21 @@ public:
         return static_cast<T *>(this);
     }
 
-     LXController *debounceMs(uint32_t durationMs)
+    LXController *debounceMs(uint32_t durationMs)
     {
         _debounceTimer.duration(durationMs);
         return this;
     }
 
-     void setPin(uint16_t pin) { _pin = pin; }
+    void setPin(uint16_t pin) { _pin = pin; }
 
-     void setRange(int min, int max)
+    void setRange(int min, int max)
     {
         _min = min;
         _max = max;
     }
 
-     static void callOnce()
+    static void callOnce()
     {
         static bool called = false;
         if (!called)
@@ -94,9 +94,9 @@ protected:
      * @return true
      * @return false
      */
-     bool checkDebounce() { return _debounceTimer.update(); }
+    bool checkDebounce() { return _debounceTimer.update(); }
 
-     float mapToParameterValue(LXParameter *p, int controllerValue)
+    float mapToParameterValue(LXParameter *p, int controllerValue)
     {
         float pmin = 0, pmax = 0;
         p->getRange(pmin, pmax);
@@ -104,7 +104,7 @@ protected:
         return v;
     }
 
-     virtual int readValue()
+    virtual int readValue()
     {
         // TODO get the value from the controller
         return rand() % (_max - _min) + _min;
